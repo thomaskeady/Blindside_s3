@@ -1,0 +1,9 @@
+
+
+% Measurement should be raw vals from 6 sensors, all the math done here
+%
+function likelihood = mlf1_1(pf, predictParticles, measurement)
+    
+    % First map measurements to most-
+    
+end
