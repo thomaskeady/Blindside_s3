@@ -100,9 +100,13 @@ function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions)
     % Normalize
     measurementNoise = eye(2);
     %likelihood = 1/sqrt((2*pi).^3 * det(measurementNoise)) * exp(-0.5 * summed);
-    likelihood = 1/sqrt((2*pi) * det(measurementNoise)) * exp(-0.5 * summed);
+    %likelihood = 1/sqrt((2*pi) * det(measurementNoise)) * exp(-0.5 * summed);
     
-    disp(likelihood);
+    likelihood = rdivide(summed, sum(summed));
+    
+    %disp(max(likelihood));
+    %disp(min(likelihood));
+    %disp(likelihood);
     % Return summation
     
 end

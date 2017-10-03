@@ -24,7 +24,9 @@ stateBounds = [
     -bound, bound;
     -bound, bound];
 
-initialize(pf, 1000, stateBounds);
+initialPose = [3.5, 0];
+%initialize(pf, 1000, stateBounds);
+initialize(pf, 1000, initialPose, eye(2));
 
 % INVESTIGATE WHETHER THESE NEED TO TO CHANGE
 pf.StateEstimationMethod = 'mean';
@@ -60,7 +62,7 @@ hold(ax, 'on')
 
 HRoofedArea = rectangle(ax, 'position', [-1,-2,2,4],'facecolor',[0.5 0.5 0.5]); % roofed area (no measurement)
 
-plotHParticles = scatter(ax, 0,0,'MarkerEdgeColor','g', 'Marker', '.');
+plotHParticles = scatter(ax, 0,0,'MarkerEdgeColor','b', 'Marker', '.');
 
 plotHBestGuesses = plot(ax, 0,0,'rs-'); % best guess of pose
 
@@ -72,6 +74,10 @@ noise = .1; % noise = random gaussian * dist * this
 rng('default'); % for repeatable result
 
 while simulationTime < 10 % if time is not up
+    
+    % Predict
+    [statePred, covPred] = predict(pf, noise);
+    
     
     % Create circular path for worker
     worker(1) = radius * cos(simulationTime);
@@ -106,9 +112,6 @@ while simulationTime < 10 % if time is not up
     
     %disp(measurement); % Post noise
     
-    % Predict
-    [statePred, covPred] = predict(pf, noise);
-
     % Correct % originally had a transpose on the measurement?
     [stateCorrected, covCorrected] = correct(pf, measurement, sensorPositions);
     

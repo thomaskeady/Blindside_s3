@@ -22,8 +22,8 @@ function predictedParticles = stf1_1(pf, prevParticles, noise)
 %     disp(size(random_noise));
     
     
-    predictedParticles = bsxfun(@plus, prevParticles, random_noise);
-    
+    %predictedParticles = bsxfun(@plus, prevParticles, random_noise);
+    predictedParticles = prevParticles;
     
     
     

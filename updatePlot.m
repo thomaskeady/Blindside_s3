@@ -10,7 +10,7 @@ function updatePlot(particleFilter, currentBestGuess, t, plotHParticles, plotFig
     %    obj.HParticles.MarkerEdgeColor = [1, 0.5, 0]; % orange
     %else
     %    obj.HParticles.MarkerEdgeColor = 'g';
-    plotHParticles.MarkerEdgeColor = 'g';
+    plotHParticles.MarkerEdgeColor = 'b';
     %end
     plotHParticles.XData = particles(1:end,1);
     plotHParticles.YData = particles(1:end,2);   
