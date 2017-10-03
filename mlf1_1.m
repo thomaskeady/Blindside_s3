@@ -4,6 +4,8 @@
 %
 
 % If sensor has maesurement that says its far, weigh its distribution less?
+% SLow down time because this person isnt moving that fast
+% Plot particle heights as a Z? for visualization
 
 function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions)
     
