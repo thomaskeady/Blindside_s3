@@ -8,9 +8,10 @@ function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions)
     % Get from Andrew
     
     disp('measurement:');
-    disp(GetSize(measurement));
+    disp(size(measurement));
     
-    % For now,
+    % For now, measurements are in meters. In future, convert from RSSI to
+    % meters
     dist = measurement.*1;
     
     
