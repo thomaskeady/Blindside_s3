@@ -2,6 +2,9 @@
 
 % Measurement should be raw vals from 6 sensors, all the math done here
 %
+
+% If sensor has maesurement that says its far, weigh its distribution less?
+
 function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions)
     
     % First map measurements to most-likely radius from each sensor
@@ -18,7 +21,7 @@ function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions)
     
     % Then make distribution around each sensor (relative to origin!)
     %mean = radius from above
-    stddev = 1; % meter
+    stddev = 0.7; % meter
     scale = 1;  % scaling factor
     
     numParticles = length(predictParticles);
@@ -96,6 +99,7 @@ function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions)
     summed = scale*sum(sensor, 1);
     
     %disp(summed);
+    disp(max(summed));
     
     % Normalize
     measurementNoise = eye(2);
