@@ -1,6 +1,6 @@
 % Start with positions of the sensors
 
-sensors = [
+sensorPositions = [
     -1, -2;
     1, -2;
     1, 0;
@@ -8,7 +8,7 @@ sensors = [
     -1, 2;
     -1, 0];
 
-disp(sensors);
+disp(sensorPositions);
 
 %plot(sensors(:, 1), sensors(:, 2)); % Plots the rectangle
 
