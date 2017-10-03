@@ -74,11 +74,16 @@ function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions)
         /(2*stddev^2));
     
     
-    predictParticles = predictParticles';
+    predictParticles = predictParticles'; % Does this get modified/used/returned anywhere?
     
     
     % Sum all distributions on top of each other
-    likelihood = scale*sum(sensor, 1);
+    summed = scale*sum(sensor, 1);
+    
+    % Normalize
+    measurementNoise = eye(2);
+    %likelihood = 1/sqrt((2*pi).^3 * det(measurementNoise)) * exp(-0.5 * summed);
+    likelihood = 1/sqrt((2*pi) * det(measurementNoise)) * exp(-0.5 * summed);
     
     % Return summation
     
