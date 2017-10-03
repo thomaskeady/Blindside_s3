@@ -13,7 +13,14 @@ function predictedParticles = stf1_1(pf, prevParticles)
     l = length(prevParticles);
 
     % 2 for x and y
-    random_noise = randn(2, l);
+    random_noise = randn(l, 2);
+    
+%     disp('prevParticles:');
+%     disp(size(prevParticles));
+%     
+%     disp('random_noise:');
+%     disp(size(random_noise));
+    
     
     predictedParticles = bsxfun(@plus, prevParticles, random_noise);
     

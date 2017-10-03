@@ -28,6 +28,14 @@ function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions)
     %sensor = double.empty(numSensors, numParticles);
     sensor = zeros(numSensors, numParticles);
     
+    disp('sensor');
+    disp(size(sensor));
+    
+    disp('predictParticles');
+    disp(size(predictParticles));
+    
+    predictParticles = predictParticles';
+    
     % One line per sensor
     sensor(1, :) = (1/sqrt(2*pi*stddev^2)) * exp( ...
         ((predictParticles(1, :) + sensorPositions(1, 1)).^2 + ...
@@ -66,7 +74,7 @@ function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions)
         /(2*stddev^2));
     
     
-    
+    predictParticles = predictParticles';
     
     
     % Sum all distributions on top of each other
