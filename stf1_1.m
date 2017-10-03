@@ -8,12 +8,12 @@
 
 %function predictedParticles = stf1_1(pf, prevParticles, dT, u)
 % varargin is left for us to define
-function predictedParticles = stf1_1(pf, prevParticles) 
+function predictedParticles = stf1_1(pf, prevParticles, noise) 
     
     l = length(prevParticles);
 
     % 2 for x and y
-    random_noise = randn(l, 2);
+    random_noise = noise*randn(l, 2);
     
 %     disp('prevParticles:');
 %     disp(size(prevParticles));

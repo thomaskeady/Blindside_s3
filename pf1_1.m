@@ -18,9 +18,11 @@ sensorPositions = [
 % Make the pf
 pf = robotics.ParticleFilter;
 
+
+bound = 8;
 stateBounds = [
-    -6, 6;
-    -8, 8];
+    -bound, bound;
+    -bound, bound];
 
 initialize(pf, 1000, stateBounds);
 
@@ -49,28 +51,27 @@ cla(ax)
 % customize the figure
 plotFigureHandle.Position = [100 100 1000 500];
 axis(ax, 'equal');
-xlim(ax, [-0.1,12]);
-ylim(ax, [-1,4]);
+xlim(ax, [-(bound+1),bound+1]);
+ylim(ax, [-(bound+1),bound+1]);
 grid(ax, 'on');
 box(ax, 'on');         
 
 hold(ax, 'on')
+
+HRoofedArea = rectangle(ax, 'position', [-1,-2,2,4],'facecolor',[0.5 0.5 0.5]); % roofed area (no measurement)
+
 plotHParticles = scatter(ax, 0,0,'MarkerEdgeColor','g', 'Marker', '.');
 
+plotHBestGuesses = plot(ax, 0,0,'rs-'); % best guess of pose
 
-
-
-
-
-
-
+plotActualPosition = plot(ax, 0,0,'gs-'); % Actual worker location
 
 % Everything here is for the circularly moving worker
 radius = 3.5;
 noise = .1; % noise = random gaussian * dist * this
 rng('default'); % for repeatable result
 
-while simulationTime < 20 % if time is not up
+while simulationTime < 10 % if time is not up
     
     % Create circular path for worker
     worker(1) = radius * cos(simulationTime);
@@ -104,7 +105,7 @@ while simulationTime < 20 % if time is not up
     measurement + ((randn(1,1) * noise).*measurement);
     
     % Predict
-    [statePred, covPred] = predict(pf);
+    [statePred, covPred] = predict(pf, noise);
 
     % Correct % originally had a transpose on the measurement?
     [stateCorrected, covCorrected] = correct(pf, measurement, sensorPositions);
@@ -112,7 +113,7 @@ while simulationTime < 20 % if time is not up
     
     % Update plot
     if ~isempty(get(groot,'CurrentFigure')) % if figure is not prematurely killed
-        updatePlot(pf, stateCorrected, simulationTime, plotHParticles, plotFigureHandle);
+        updatePlot(pf, stateCorrected, simulationTime, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition, worker);
     else
         break
     end

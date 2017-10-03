@@ -1,5 +1,5 @@
 %function updatePlot(obj, particleFilter, currentBestGuess, t)
-function updatePlot(particleFilter, currentBestGuess, t, plotHParticles, plotFigureHandle)
+function updatePlot(particleFilter, currentBestGuess, t, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition, worker)
     % updatePlot
 
     %obj.Cnt1 = obj.Cnt1 + 1;           
@@ -23,7 +23,12 @@ function updatePlot(particleFilter, currentBestGuess, t, plotHParticles, plotFig
 %         obj.HBestGuesses.YData = obj.BGs(:,2);
 %     end
 
+    plotHBestGuesses.XData = currentBestGuess(1);
+    plotHBestGuesses.YData = currentBestGuess(2);
 
+    plotActualPosition.XData = worker(1);
+    plotActualPosition.YData = worker(2);
+    
 %     % draw car rear axle center
 %     obj.HCenter.XData = obj.Pose(1);
 %     obj.HCenter.YData = obj.Pose(2);
