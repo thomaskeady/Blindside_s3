@@ -104,6 +104,8 @@ while simulationTime < 10 % if time is not up
     % Add noise
     measurement + ((randn(1,1) * noise).*measurement);
     
+    %disp(measurement); % Post noise
+    
     % Predict
     [statePred, covPred] = predict(pf, noise);
 

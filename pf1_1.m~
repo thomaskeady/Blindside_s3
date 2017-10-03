@@ -58,11 +58,13 @@ box(ax, 'on');
 
 hold(ax, 'on')
 
-HRoofedArea = rectangle(ax, 'position', [-1,-2,2,6],'facecolor',[0.5 0.5 0.5]); % roofed area (no measurement)
+HRoofedArea = rectangle(ax, 'position', [-1,-2,2,4],'facecolor',[0.5 0.5 0.5]); % roofed area (no measurement)
 
 plotHParticles = scatter(ax, 0,0,'MarkerEdgeColor','g', 'Marker', '.');
 
+plotHBestGuesses = plot(ax, 0,0,'rs-'); % best guess of pose
 
+plotActualPosition = plot(ax, 0,0,'gs-'); % Actual worker location
 
 % Everything here is for the circularly moving worker
 radius = 3.5;
@@ -102,6 +104,8 @@ while simulationTime < 10 % if time is not up
     % Add noise
     measurement + ((randn(1,1) * noise).*measurement);
     
+    %disp(measurement); % Pre noise
+    
     % Predict
     [statePred, covPred] = predict(pf, noise);
 
@@ -111,7 +115,7 @@ while simulationTime < 10 % if time is not up
     
     % Update plot
     if ~isempty(get(groot,'CurrentFigure')) % if figure is not prematurely killed
-        updatePlot(pf, stateCorrected, simulationTime, plotHParticles, plotFigureHandle);
+        updatePlot(pf, stateCorrected, simulationTime, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition, worker);
     else
         break
     end
