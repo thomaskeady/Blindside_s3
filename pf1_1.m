@@ -30,7 +30,8 @@ initialize(pf, numParticles, stateBounds);
 %initialize(pf, numParticles, initialPose, eye(2));
 
 % INVESTIGATE WHETHER THESE NEED TO TO CHANGE
-pf.StateEstimationMethod = 'mean';
+%pf.StateEstimationMethod = 'mean';
+pf.StateEstimationMethod = 'maxweight';
 pf.ResamplingMethod = 'systematic';
 
 % In separate files for now
@@ -38,10 +39,10 @@ pf.StateTransitionFcn = @stf1_1;
 pf.MeasurementLikelihoodFcn = @mlf1_1;
 
 % Time step
-dt = 0.1; % in seconds
+dt = 0.5; % in seconds
 
-r = robotics.Rate(1/dt);
-reset(r); % Example says "% Reset the fixed-rate object"
+%r = robotics.Rate(1/dt);
+%reset(r); % Example says "% Reset the fixed-rate object"
 
 simulationTime = 0;
 
@@ -72,6 +73,7 @@ plotActualPosition = plot(ax, 0,0,'gs-'); % Actual worker location
 % Everything here is for the circularly moving worker
 radius = 3.5;
 noise = 3; % noise = random gaussian * dist * this
+speed = 0.5;   % Scales how quickly they move
 rng('default'); % for repeatable result
 
 while simulationTime < 20 % if time is not up
@@ -81,8 +83,8 @@ while simulationTime < 20 % if time is not up
     
     
     % Create circular path for worker
-    worker(1) = radius * cos(simulationTime);
-    worker(2) = radius * sin(simulationTime);
+    worker(1) = radius * cos(speed * simulationTime);
+    worker(2) = radius * sin(speed * simulationTime);
     
     measurement(1) = sqrt( ...
         (sensorPositions(1,1) - worker(1))^2 + ...
@@ -124,7 +126,9 @@ while simulationTime < 20 % if time is not up
         break
     end
     
-    waitfor(r);
+    %waitfor(r);
+    pause;
+    
     
     % Update simulation time
     simulationTime = simulationTime + dt;
