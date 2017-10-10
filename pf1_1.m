@@ -38,7 +38,7 @@ pf.StateTransitionFcn = @stf1_1;
 pf.MeasurementLikelihoodFcn = @mlf1_1;
 
 % Time step
-dt = 1; % in seconds
+dt = 0.1; % in seconds
 
 r = robotics.Rate(1/dt);
 reset(r); % Example says "% Reset the fixed-rate object"
@@ -74,7 +74,7 @@ radius = 3.5;
 noise = 3; % noise = random gaussian * dist * this
 rng('default'); % for repeatable result
 
-while simulationTime < 10 % if time is not up
+while simulationTime < 20 % if time is not up
     
     % Predict
     [statePred, covPred] = predict(pf, noise);
