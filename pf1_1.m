@@ -72,7 +72,7 @@ plotActualPosition = plot(ax, 0,0,'gs-', 'MarkerSize', 10, 'LineWidth', 1.5); % 
 
 % Everything here is for the circularly moving worker
 radius = 4.5;
-noise = 6; % noise = random gaussian * dist * this
+noise = 3; % noise = random gaussian * dist * this
 speed = 0.5;   % Scales how quickly they move
 rng('default'); % for repeatable result
 
