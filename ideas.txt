@@ -1,0 +1,12 @@
+Ideas:
+
+STF:
+    Add distribution around previous estimate to encourage more particles to be near there
+    Pull particles towards previous estimate? Not sure i like that
+    
+MLF:
+    
+
+
+General:
+    Randomly throw down new particles 

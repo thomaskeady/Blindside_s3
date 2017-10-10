@@ -18,7 +18,7 @@ sensorPositions = [
 % Make the pf
 pf = robotics.ParticleFilter;
 
-numParticles = 1000;
+numParticles = 2000;
 
 bound = 8;
 stateBounds = [
@@ -64,15 +64,15 @@ hold(ax, 'on')
 
 HRoofedArea = rectangle(ax, 'position', [-1,-2,2,4],'facecolor',[0.5 0.5 0.5]); % roofed area (no measurement)
 
-plotHParticles = scatter(ax, 0,0,'MarkerEdgeColor','b', 'Marker', '.');
+plotHParticles = scatter(ax, 0,0,'MarkerEdgeColor','c', 'Marker', '.');
 
-plotHBestGuesses = plot(ax, 0,0,'rs-'); % best guess of pose
+plotHBestGuesses = plot(ax, 0,0,'rs-', 'MarkerSize', 10, 'LineWidth', 1.5); % best guess of pose
 
-plotActualPosition = plot(ax, 0,0,'gs-'); % Actual worker location
+plotActualPosition = plot(ax, 0,0,'gs-', 'MarkerSize', 10, 'LineWidth', 1.5); % Actual worker location
 
 % Everything here is for the circularly moving worker
-radius = 3.5;
-noise = 3; % noise = random gaussian * dist * this
+radius = 4.5;
+noise = 6; % noise = random gaussian * dist * this
 speed = 0.5;   % Scales how quickly they move
 rng('default'); % for repeatable result
 
