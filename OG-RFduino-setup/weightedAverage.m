@@ -144,22 +144,29 @@ pause(1);
 %              R
 
 
-NUM_RECEIVERS = 8; % Dont forget extra dummy one
+NUM_RECEIVERS = 6; % Dont forget extra dummy one
 START_RECEIVER = 2; % The first one that will get a successful read
 
 disp('Opening receivers')
 
 duinos = cell(NUM_RECEIVERS,1);
-duinos{1} = '/dev/tty.usbserial-DN00D2RN';
-duinos{2} = '/dev/tty.usbserial-DN00D3MA';
-duinos{3} = '/dev/tty.usbserial-DN00CVZK';
-duinos{4} = '/dev/tty.usbserial-DN00CZUI';
-duinos{5} = '/dev/tty.usbserial-DN00D41X';
-duinos{6} = '/dev/tty.usbserial-DN00D2T3';
-duinos{7} = '/dev/tty.usbserial-DN00CTR3';
-duinos{8} = '/dev/tty.usbserial-DN00CU74';
+% duinos{1} = '/dev/tty.usbserial-DN00D2RN';
+% duinos{2} = '/dev/tty.usbserial-DN00D3MA';
+% duinos{3} = '/dev/tty.usbserial-DN00CVZK';
+% duinos{4} = '/dev/tty.usbserial-DN00CZUI';
+% duinos{5} = '/dev/tty.usbserial-DN00D41X';
+% duinos{6} = '/dev/tty.usbserial-DN00D2T3';
+% duinos{7} = '/dev/tty.usbserial-DN00CTR3';
+% duinos{8} = '/dev/tty.usbserial-DN00CU74';
 %duinos{9} = '/dev/tty.usbserial-DN00B9FJ';
 %duinos{10} = 
+
+duinos{4} = '/dev/tty.usbserial-DN00CSPC';
+duinos{3} = '/dev/tty.usbserial-DN00CZUI';
+duinos{2} = '/dev/tty.usbserial-DN00B9FJ';
+duinos{5} = '/dev/tty.usbserial-DN00D2RN';
+duinos{6} = '/dev/tty.usbserial-DN00D3MA';
+duinos{1} = '/dev/tty.usbserial-DN00D41X';
 
 
 ports = cell(NUM_RECEIVERS, 1);

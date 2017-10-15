@@ -19,13 +19,18 @@ sensorPositions = [
 %plot(sensors(:, 1), sensors(:, 2)); % Plots the rectangle
 
 % Receiver addresses
-NUM_RECEIVERS = 1; % Should be equal to length(sensorPositions)
+NUM_RECEIVERS = 6; % Should be equal to length(sensorPositions)
 START_RECEIVER = 2; % The first one that will get a successful read
 
 disp('Opening receivers')
 
 duinos = cell(NUM_RECEIVERS,1);
-duinos{1} = '/dev/tty.usbserial-DN00CU74';
+duinos{4} = '/dev/tty.usbserial-DN00CSPC';
+duinos{3} = '/dev/tty.usbserial-DN00CZUI';
+duinos{2} = '/dev/tty.usbserial-DN00B9FJ';
+duinos{5} = '/dev/tty.usbserial-DN00D2RN';
+duinos{6} = '/dev/tty.usbserial-DN00D3MA';
+duinos{1} = '/dev/tty.usbserial-DN00D41X';
 
 ports = cell(NUM_RECEIVERS, 1);
 
@@ -56,10 +61,14 @@ for t = 1:5 % Clearing startup glitches
     for i = 1:NUM_RECEIVERS
         
         fwrite(ports{i}, 'A');
-        trash = fscanf(ports{i}, '%d');
+        %trash = fscanf(ports{i}, '%d');
+        readings{i} = fscanf(ports{i}, '%d');
         
     end
 end
+
+disp(class(cell2mat(readings)));
+disp(cell2mat(readings));
 
 disp('done with trash')
 
@@ -130,23 +139,29 @@ rng('default'); % for repeatable result
 
 while simulationTime < 20 % if time is not up
     
+    disp('==== STARTED NEXT LOOP ====');
+    
     % Predict
     [statePred, covPred] = predict(pf, NOISE);
     
     % Real measurements now!
     
-    disp('before reads')
+    measurement = zeros(length(sensorPositions), 1);
     
     for i = 1:NUM_RECEIVERS
         
         fwrite(ports{i}, 'A');
         readings{i} = fscanf(ports{i}, '%d');
+        disp( readings{i});
         readings{i} = RSSI_TO_M_COEFF * exp(RSSI_TO_M_EXP * readings{i});
-        measurement(i) = readings{i}%disp(i);
-        %disp(oFL);
         
-    end
+        
+    end    
     
+    measurement = cell2mat(readings);
+    
+    disp(readings);
+    disp(measurement);
     
 %     % Create circular path for worker
 %     worker(1) = RADIUS * cos(SPEED * simulationTime);
