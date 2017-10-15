@@ -92,20 +92,20 @@ plotHBestGuesses = plot(ax, 0,0,'rs-', 'MarkerSize', 10, 'LineWidth', 1.5); % be
 plotActualPosition = plot(ax, 0,0,'gs-', 'MarkerSize', 10, 'LineWidth', 1.5); % Actual worker location
 
 % Everything here is for the circularly moving worker
-RADIUS = 4.5;
-NOISE = 3; % noise = random gaussian * dist * this
-SPEED = 0.5;   % Scales how quickly they move
+radius = 4.5;
+noise = 3; % noise = random gaussian * dist * this
+speed = 0.5;   % Scales how quickly they move
 rng('default'); % for repeatable result
 
 while simulationTime < 20 % if time is not up
     
     % Predict
-    [statePred, covPred] = predict(pf, NOISE);
+    [statePred, covPred] = predict(pf, noise);
     
     
     % Create circular path for worker
-    worker(1) = RADIUS * cos(SPEED * simulationTime);
-    worker(2) = RADIUS * sin(SPEED * simulationTime);
+    worker(1) = radius * cos(speed * simulationTime);
+    worker(2) = radius * sin(speed * simulationTime);
     
     measurement(1) = sqrt( ...
         (sensorPositions(1,1) - worker(1))^2 + ...
@@ -132,7 +132,7 @@ while simulationTime < 20 % if time is not up
         (sensorPositions(6,2) - worker(2))^2 );
     
     % Add noise
-    measurement + ((randn(1,1) * NOISE).*measurement);
+    measurement + ((randn(1,1) * noise).*measurement);
     
     %disp(measurement); % Post noise
     
