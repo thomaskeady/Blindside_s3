@@ -19,21 +19,49 @@ sensorPositions = [
 %plot(sensors(:, 1), sensors(:, 2)); % Plots the rectangle
 
 % Receiver addresses
-NUM_RECEIVERS = 8; % Dont forget extra dummy one
+NUM_RECEIVERS = 1; % Should be equal to length(sensorPositions)
 START_RECEIVER = 2; % The first one that will get a successful read
 
 disp('Opening receivers')
 
 duinos = cell(NUM_RECEIVERS,1);
-duinos{1} = '/dev/tty.usbserial-DN00D2RN';
-duinos{2} = '/dev/tty.usbserial-DN00D3MA';
-duinos{3} = '/dev/tty.usbserial-DN00CVZK';
-duinos{4} = '/dev/tty.usbserial-DN00CZUI';
-duinos{5} = '/dev/tty.usbserial-DN00D41X';
-duinos{6} = '/dev/tty.usbserial-DN00D2T3';
-duinos{7} = '/dev/tty.usbserial-DN00CTR3';
-duinos{8} = '/dev/tty.usbserial-DN00CU74';
+duinos{1} = '/dev/tty.usbserial-DN00CU74';
 
+ports = cell(NUM_RECEIVERS, 1);
+
+% Do we still have to do this janky first one outside the loop?
+ports{1} = serial(duinos{1}, 'BaudRate', 115200);
+fopen(ports{1});
+%set(ports{1}, 'Timeout', 0.1);
+set(ports{1}, 'Timeout', 2);
+
+% 
+%for i = 1:length(duinos)
+for i = START_RECEIVER:NUM_RECEIVERS
+    %disp(duinos{i});
+    %disp('next');
+    ports{i} = serial(duinos{i},'BaudRate',115200);
+    fopen(ports{i});
+    set(ports{i}, 'Timeout', 2);
+    
+end
+
+%disp(ports);
+
+readings = cell(NUM_RECEIVERS, 1);
+
+trash = 0;
+
+for t = 1:5 % Clearing startup glitches
+    for i = 1:NUM_RECEIVERS
+        
+        fwrite(ports{i}, 'A');
+        trash = fscanf(ports{i}, '%d');
+        
+    end
+end
+
+disp('done with trash')
 
 
 % Make the pf
@@ -91,6 +119,9 @@ plotHBestGuesses = plot(ax, 0,0,'rs-', 'MarkerSize', 10, 'LineWidth', 1.5); % be
 
 plotActualPosition = plot(ax, 0,0,'gs-', 'MarkerSize', 10, 'LineWidth', 1.5); % Actual worker location
 
+RSSI_TO_M_COEFF = 0.00482998;
+RSSI_TO_M_EXP = -0.104954;
+
 % Everything here is for the circularly moving worker
 RADIUS = 4.5;
 NOISE = 3; % noise = random gaussian * dist * this
@@ -102,47 +133,64 @@ while simulationTime < 20 % if time is not up
     % Predict
     [statePred, covPred] = predict(pf, NOISE);
     
+    % Real measurements now!
     
-    % Create circular path for worker
-    worker(1) = RADIUS * cos(SPEED * simulationTime);
-    worker(2) = RADIUS * sin(SPEED * simulationTime);
+    disp('before reads')
     
-    measurement(1) = sqrt( ...
-        (sensorPositions(1,1) - worker(1))^2 + ...
-        (sensorPositions(1,2) - worker(2))^2 );
+    for i = 1:NUM_RECEIVERS
+        
+        fwrite(ports{i}, 'A');
+        readings{i} = fscanf(ports{i}, '%d');
+        readings{i} = RSSI_TO_M_COEFF * exp(RSSI_TO_M_EXP * readings{i});
+        measurement(i) = readings{i}%disp(i);
+        %disp(oFL);
+        
+    end
     
-    measurement(2) = sqrt( ...
-        (sensorPositions(2,1) - worker(1))^2 + ...
-        (sensorPositions(2,2) - worker(2))^2 );
     
-    measurement(3) = sqrt( ...
-        (sensorPositions(3,1) - worker(1))^2 + ...
-        (sensorPositions(3,2) - worker(2))^2 );
+%     % Create circular path for worker
+%     worker(1) = RADIUS * cos(SPEED * simulationTime);
+%     worker(2) = RADIUS * sin(SPEED * simulationTime);
+%     
+%     measurement(1) = sqrt( ...
+%         (sensorPositions(1,1) - worker(1))^2 + ...
+%         (sensorPositions(1,2) - worker(2))^2 );
+%     
+%     measurement(2) = sqrt( ...
+%         (sensorPositions(2,1) - worker(1))^2 + ...
+%         (sensorPositions(2,2) - worker(2))^2 );
+%     
+%     measurement(3) = sqrt( ...
+%         (sensorPositions(3,1) - worker(1))^2 + ...
+%         (sensorPositions(3,2) - worker(2))^2 );
+%     
+%     measurement(4) = sqrt( ...
+%         (sensorPositions(4,1) - worker(1))^2 + ...
+%         (sensorPositions(4,2) - worker(2))^2 );
+%     
+%     measurement(5) = sqrt( ...
+%         (sensorPositions(5,1) - worker(1))^2 + ...
+%         (sensorPositions(5,2) - worker(2))^2 );
+%     
+%     measurement(6) = sqrt( ...
+%         (sensorPositions(6,1) - worker(1))^2 + ...
+%         (sensorPositions(6,2) - worker(2))^2 );
+%     
+%     % Add noise
+%     measurement + ((randn(1,1) * NOISE).*measurement);
+%     
+%     %disp(measurement); % Post noise
     
-    measurement(4) = sqrt( ...
-        (sensorPositions(4,1) - worker(1))^2 + ...
-        (sensorPositions(4,2) - worker(2))^2 );
-    
-    measurement(5) = sqrt( ...
-        (sensorPositions(5,1) - worker(1))^2 + ...
-        (sensorPositions(5,2) - worker(2))^2 );
-    
-    measurement(6) = sqrt( ...
-        (sensorPositions(6,1) - worker(1))^2 + ...
-        (sensorPositions(6,2) - worker(2))^2 );
-    
-    % Add noise
-    measurement + ((randn(1,1) * NOISE).*measurement);
-    
-    %disp(measurement); % Post noise
-    
+
+
     % Correct % originally had a transpose on the measurement?
     [stateCorrected, covCorrected] = correct(pf, measurement, sensorPositions);
     
     
     % Update plot
     if ~isempty(get(groot,'CurrentFigure')) % if figure is not prematurely killed
-        updatePlot(pf, stateCorrected, simulationTime, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition, worker);
+        %updatePlot(pf, stateCorrected, simulationTime, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition, worker);
+        updatePlot(pf, stateCorrected, simulationTime, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition); % Because we don't have a known position anymore!
     else
         break
     end
