@@ -25,12 +25,12 @@ START_RECEIVER = 2; % The first one that will get a successful read
 disp('Opening receivers')
 
 duinos = cell(NUM_RECEIVERS,1);
-duinos{4} = '/dev/tty.usbserial-DN00CSPC';
-duinos{3} = '/dev/tty.usbserial-DN00CZUI';
-duinos{2} = '/dev/tty.usbserial-DN00B9FJ';
-duinos{5} = '/dev/tty.usbserial-DN00D2RN';
-duinos{6} = '/dev/tty.usbserial-DN00D3MA';
-duinos{1} = '/dev/tty.usbserial-DN00D41X';
+duinos{4} = '/dev/tty.usbserial-DN00CSPC';%
+duinos{3} = '/dev/tty.usbserial-DN00CZUI';%
+duinos{2} = '/dev/tty.usbserial-DN00B9FJ';%
+duinos{5} = '/dev/tty.usbserial-DN00D2RN';%
+duinos{6} = '/dev/tty.usbserial-DN00D3MA';%
+duinos{1} = '/dev/tty.usbserial-DN00D41X';%
 
 ports = cell(NUM_RECEIVERS, 1);
 
@@ -128,6 +128,15 @@ plotHBestGuesses = plot(ax, 0,0,'rs-', 'MarkerSize', 10, 'LineWidth', 1.5); % be
 
 plotActualPosition = plot(ax, 0,0,'gs-', 'MarkerSize', 10, 'LineWidth', 1.5); % Actual worker location
 
+circlePlots = cell(NUM_RECEIVERS, 1);
+
+theta = linspace(0, 2*pi);
+
+for i = 1:NUM_RECEIVERS
+    circlePlots{i} = plot(ax, 0*cos(theta) + sensorPositions(i, 1), 0*sin(theta) + sensorPositions(i, 2), 'y');
+end
+
+
 RSSI_TO_M_COEFF = 0.00482998;
 RSSI_TO_M_EXP = -0.104954;
 
@@ -136,6 +145,8 @@ RADIUS = 4.5;
 NOISE = 3; % noise = random gaussian * dist * this
 SPEED = 0.5;   % Scales how quickly they move
 rng('default'); % for repeatable result
+worker(1) = 0;
+worker(2) = 0;
 
 while simulationTime < 20 % if time is not up
     
@@ -163,41 +174,6 @@ while simulationTime < 20 % if time is not up
     disp(readings);
     disp(measurement);
     
-%     % Create circular path for worker
-%     worker(1) = RADIUS * cos(SPEED * simulationTime);
-%     worker(2) = RADIUS * sin(SPEED * simulationTime);
-%     
-%     measurement(1) = sqrt( ...
-%         (sensorPositions(1,1) - worker(1))^2 + ...
-%         (sensorPositions(1,2) - worker(2))^2 );
-%     
-%     measurement(2) = sqrt( ...
-%         (sensorPositions(2,1) - worker(1))^2 + ...
-%         (sensorPositions(2,2) - worker(2))^2 );
-%     
-%     measurement(3) = sqrt( ...
-%         (sensorPositions(3,1) - worker(1))^2 + ...
-%         (sensorPositions(3,2) - worker(2))^2 );
-%     
-%     measurement(4) = sqrt( ...
-%         (sensorPositions(4,1) - worker(1))^2 + ...
-%         (sensorPositions(4,2) - worker(2))^2 );
-%     
-%     measurement(5) = sqrt( ...
-%         (sensorPositions(5,1) - worker(1))^2 + ...
-%         (sensorPositions(5,2) - worker(2))^2 );
-%     
-%     measurement(6) = sqrt( ...
-%         (sensorPositions(6,1) - worker(1))^2 + ...
-%         (sensorPositions(6,2) - worker(2))^2 );
-%     
-%     % Add noise
-%     measurement + ((randn(1,1) * NOISE).*measurement);
-%     
-%     %disp(measurement); % Post noise
-    
-
-
     % Correct % originally had a transpose on the measurement?
     [stateCorrected, covCorrected] = correct(pf, measurement, sensorPositions);
     
@@ -205,7 +181,7 @@ while simulationTime < 20 % if time is not up
     % Update plot
     if ~isempty(get(groot,'CurrentFigure')) % if figure is not prematurely killed
         %updatePlot(pf, stateCorrected, simulationTime, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition, worker);
-        updatePlot(pf, stateCorrected, simulationTime, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition); % Because we don't have a known position anymore!
+        updatePlot(pf, stateCorrected, simulationTime, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition, worker, sensorPositions, measurement, circlePlots);
     else
         break
     end
@@ -221,7 +197,8 @@ end
 
 
 
-
+delete(instrfindall);
+%clear all;
 
 disp('Done');
 
