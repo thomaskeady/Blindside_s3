@@ -6,13 +6,21 @@ delete(instrfindall) % For open serial ports
 
 % Start with positions of the sensors
 
+% sensorPositions = [
+%     -1, -2;
+%     1, -2;
+%     1, 0;
+%     1, 2;
+%     -1, 2;
+%     -1, 0];
+
 sensorPositions = [
-    -1, -2;
-    1, -2;
-    1, 0;
-    1, 2;
-    -1, 2;
-    -1, 0];
+    -0.5, -1;
+    0.5, -1;
+    0.5, 0;
+    0.5, 1;
+    -0.5, 1;
+    -0.5, 0];
 
 %disp(sensorPositions);
 
