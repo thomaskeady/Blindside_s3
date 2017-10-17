@@ -15,6 +15,9 @@ sensorPositions = [
 
 %plot(sensors(:, 1), sensors(:, 2)); % Plots the rectangle
 
+NUM_RECEIVERS = 6; % Should be equal to length(sensorPositions)
+%START_RECEIVER = 2; % The first one that will get a successful read
+
 % Make the pf
 pf = robotics.ParticleFilter;
 
@@ -70,9 +73,19 @@ plotHBestGuesses = plot(ax, 0,0,'rs-', 'MarkerSize', 10, 'LineWidth', 1.5); % be
 
 plotActualPosition = plot(ax, 0,0,'gs-', 'MarkerSize', 10, 'LineWidth', 1.5); % Actual worker location
 
+measurement = zeros(length(sensorPositions), 1);
+
+circlePlots = cell(NUM_RECEIVERS, 1);
+
 theta = linspace(0, 2*pi);
-plotCircles = plot(measurement*cos(theta) + sensorPositions(:, 1), ...
-                   measurement*sin(theta) + sensorPositions(:, 2), 'y');
+
+for i = 1:NUM_RECEIVERS
+    circlePlots{i} = plot(ax, 0*cos(theta) + sensorPositions(i, 1), 0*sin(theta) + sensorPositions(i, 2), 'y');
+end
+
+% 
+% plotCircles = plot(measurement*cos(theta) + sensorPositions(:, 1), ...
+%                    measurement*sin(theta) + sensorPositions(:, 2), 'y');
 
 % Everything here is for the circularly moving worker
 radius = 4.5;
@@ -127,7 +140,7 @@ while simulationTime < 20 % if time is not up
     if ~isempty(get(groot,'CurrentFigure')) % if figure is not prematurely killed
 %         updatePlot(pf, stateCorrected, simulationTime, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition, worker, sensorPositions, measurement);
 %         updatePlot(pf, stateCorrected, simulationTime, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition, worker, plotCircles);
-        updatePlot(pf, stateCorrected, simulationTime, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition, worker, sensorPositions, measurement, plotCircles);
+        updatePlot(pf, stateCorrected, simulationTime, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition, worker, sensorPositions, measurement, circlePlots);
     else
         break
     end
