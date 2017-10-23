@@ -41,6 +41,8 @@ sensorPositions = [ % actual
      
 %disp(sensorPositions);
 
+% Should print sensor positions to file too
+
 %plot(sensors(:, 1), sensors(:, 2)); % Plots the rectangle
 
 % Receiver addresses
@@ -67,19 +69,19 @@ duinos{6} = '/dev/tty.usbserial-DN00D41X';
 ports = cell(NUM_RECEIVERS, 1);
 
 % Do we still have to do this janky first one outside the loop?
-ports{1} = serial(duinos{1}, 'BaudRate', 115200);
-fopen(ports{1});
+%ports{1} = serial(duinos{1}, 'BaudRate', 115200);
+%fopen(ports{1});
 %set(ports{1}, 'Timeout', 0.1);
-set(ports{1}, 'Timeout', 2);
+%set(ports{1}, 'Timeout', 2);
 
 % 
 %for i = 1:length(duinos)
-for i = START_RECEIVER:NUM_RECEIVERS
+for i = START_RECEIVER:NUM_RECEIVERS+1
     %disp(duinos{i});
     %disp('next');
-    ports{i} = serial(duinos{i},'BaudRate',115200);
-    fopen(ports{i});
-    set(ports{i}, 'Timeout', 2);
+    ports{i-1} = serial(duinos{i-1},'BaudRate',115200);
+    fopen(ports{i-1});
+    set(ports{i-1}, 'Timeout', 2);
     
 end
 
@@ -107,9 +109,12 @@ disp('done with trash')
 
 % For data logging
 location = 'H224B';
-fname = sprintf('dara_%s.xlsx', datestr(now,'mm-dd-yyyy HH-MM'));
+fname = sprintf('data/data_outside_%s.txt', datestr(now,'mm-dd-yyyy_HH-MM'));
 fid = fopen(fname, 'a+');
-
+fprintf(fid, '%d\t%d\t%d\t%d\t%d\t%d\n', sensorPositions(:, 1)); % print all x vals
+fprintf(fid, '%d\t%d\t%d\t%d\t%d\t%d\n', sensorPositions(:, 2)); % print all y vals
+%fprintf(fid, '%d\t%d\t%d\t%d\t%d\t%d\n', sensorPositions(1, 1), sensorPositions(1, 2), sensorPositions(1, 3), sensorPositions(1, 4), sensorPositions(1, 5), sensorPositions(1, 6)); % print all x vals
+%fprintf(fid, '%d\t%d\t%d\t%d\t%d\t%d\n', sensorPositions(2, 1), sensorPositions(2, 2), sensorPositions(2, 3), sensorPositions(2, 4), sensorPositions(2, 5), sensorPositions(2, 6)); % print all y vals
 
 % Make the pf
 pf = robotics.ParticleFilter;
@@ -208,6 +213,8 @@ while simulationTime < 50 % if time is not up
     end    
     
     measurement = cell2mat(readings);
+    
+    fprintf(fid, '\t%f\t%f\t%f\t%f\t%f\t\n', measurement);
     
     disp(readings);
     disp(measurement);
