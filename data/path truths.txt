@@ -1,0 +1,10 @@
+first path (linear):
+	start 
+	move back 1m for 1 reading
+	repeat
+	repeat
+	repeat?
+	move forward 1m for 1 reading
+	repeat
+	
+	

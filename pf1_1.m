@@ -6,39 +6,27 @@ delete(instrfindall) % For open serial ports
 
 % Start with positions of the sensors
 
-sensorPositions = [
-     -1, -2;
-     1, -2;
-     1, 0;
-     1, 2;
-     -1, 2;
-     -1, 0];
-
 % sensorPositions = [
-%     -0.5, -1;
-%     0.5, -1;
-%     0.5, 0;
-%     0.5, 1;
-%     -0.5, 1;
-%     -0.5, 0];
-% 
-
-% sensorPositions = [ % thought
+%      -1, -2;
 %      1, -2;
 %      1, 0;
 %      1, 2;
 %      -1, 2;
-%      -1, 0;
-%      -1, -2];
-     
-sensorPositions = [ % actual
-     -1, -2;
-     -1, -0;
-     -1, 2;
-     1, 2;
-     1, -0;
-     1, -2];
-     
+%      -1, 0];
+
+
+sideDist = 1.52; % m, 2x this distance is length of vehicle
+halfwidth = 1.22; %m, 2x this is width of vehicle
+
+sensorPositions = [
+    -halfwidth, -sideDist;
+    -halfwidth, 0;
+    -halfwidth, sideDist;
+    halfwidth, sideDist;
+    halfwidth, 0;
+    halfwidth, -sideDist];
+    
+
 %disp(sensorPositions);
 
 % Should print sensor positions to file too
@@ -59,12 +47,12 @@ duinos = cell(NUM_RECEIVERS,1);
 % duinos{6} = '/dev/tty.usbserial-DN00D3MA';%
 % duinos{1} = '/dev/tty.usbserial-DN00D41X';%
 
-duinos{1} = '/dev/tty.usbserial-DN00B9FJ';
-duinos{2} = '/dev/tty.usbserial-DN00CZUI';
-duinos{3} = '/dev/tty.usbserial-DN00CSPC';
-duinos{4} = '/dev/tty.usbserial-DN00D2RN';
-duinos{5} = '/dev/tty.usbserial-DN00D3MA';
-duinos{6} = '/dev/tty.usbserial-DN00D41X';
+duinos{1} = '/dev/tty.usbserial-DN00D3MA';%
+duinos{2} = '/dev/tty.usbserial-DN00D2RN';%
+duinos{3} = '/dev/tty.usbserial-DN00CSPC';%
+duinos{4} = '/dev/tty.usbserial-DN00B9FJ';%
+duinos{5} = '/dev/tty.usbserial-DN00D41X';%
+duinos{6} = '/dev/tty.usbserial-DN00CVZK';%
 
 ports = cell(NUM_RECEIVERS, 1);
 
