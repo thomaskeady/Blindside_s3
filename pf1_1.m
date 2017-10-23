@@ -6,22 +6,39 @@ delete(instrfindall) % For open serial ports
 
 % Start with positions of the sensors
 
-% sensorPositions = [
-%     -1, -2;
-%     1, -2;
-%     1, 0;
-%     1, 2;
-%     -1, 2;
-%     -1, 0];
-
 sensorPositions = [
-    -0.5, -1;
-    0.5, -1;
-    0.5, 0;
-    0.5, 1;
-    -0.5, 1;
-    -0.5, 0];
+     -1, -2;
+     1, -2;
+     1, 0;
+     1, 2;
+     -1, 2;
+     -1, 0];
 
+% sensorPositions = [
+%     -0.5, -1;
+%     0.5, -1;
+%     0.5, 0;
+%     0.5, 1;
+%     -0.5, 1;
+%     -0.5, 0];
+% 
+
+% sensorPositions = [ % thought
+%      1, -2;
+%      1, 0;
+%      1, 2;
+%      -1, 2;
+%      -1, 0;
+%      -1, -2];
+     
+sensorPositions = [ % actual
+     -1, -2;
+     -1, -0;
+     -1, 2;
+     1, 2;
+     1, -0;
+     1, -2];
+     
 %disp(sensorPositions);
 
 %plot(sensors(:, 1), sensors(:, 2)); % Plots the rectangle
@@ -33,12 +50,19 @@ START_RECEIVER = 2; % The first one that will get a successful read
 disp('Opening receivers')
 
 duinos = cell(NUM_RECEIVERS,1);
-duinos{4} = '/dev/tty.usbserial-DN00CSPC';%
-duinos{3} = '/dev/tty.usbserial-DN00CZUI';%
-duinos{2} = '/dev/tty.usbserial-DN00B9FJ';%
-duinos{5} = '/dev/tty.usbserial-DN00D2RN';%
-duinos{6} = '/dev/tty.usbserial-DN00D3MA';%
-duinos{1} = '/dev/tty.usbserial-DN00D41X';%
+% duinos{4} = '/dev/tty.usbserial-DN00CSPC';%
+% duinos{3} = '/dev/tty.usbserial-DN00CZUI';%
+% duinos{2} = '/dev/tty.usbserial-DN00B9FJ';%%
+% duinos{5} = '/dev/tty.usbserial-DN00D2RN';%
+% duinos{6} = '/dev/tty.usbserial-DN00D3MA';%
+% duinos{1} = '/dev/tty.usbserial-DN00D41X';%
+
+duinos{1} = '/dev/tty.usbserial-DN00B9FJ';
+duinos{2} = '/dev/tty.usbserial-DN00CZUI';
+duinos{3} = '/dev/tty.usbserial-DN00CSPC';
+duinos{4} = '/dev/tty.usbserial-DN00D2RN';
+duinos{5} = '/dev/tty.usbserial-DN00D3MA';
+duinos{6} = '/dev/tty.usbserial-DN00D41X';
 
 ports = cell(NUM_RECEIVERS, 1);
 
@@ -79,6 +103,12 @@ disp(class(cell2mat(readings)));
 disp(cell2mat(readings));
 
 disp('done with trash')
+
+
+% For data logging
+location = 'H224B';
+fname = sprintf('dara_%s.xlsx', datestr(now,'mm-dd-yyyy HH-MM'));
+fid = fopen(fname, 'a+');
 
 
 % Make the pf
@@ -156,7 +186,7 @@ rng('default'); % for repeatable result
 worker(1) = 0;
 worker(2) = 0;
 
-while simulationTime < 20 % if time is not up
+while simulationTime < 50 % if time is not up
     
     disp('==== STARTED NEXT LOOP ====');
     
@@ -207,6 +237,8 @@ end
 
 delete(instrfindall);
 %clear all;
+
+fclose(fid);
 
 disp('Done');
 
