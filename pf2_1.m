@@ -22,6 +22,34 @@ sensorPositions = [
 
 
 % Live or simulated?
+LIVE = false;
+
+if (LIVE) 
+    %   initialize beacons (do all this in beacon-handling class?)
+
+    %   collect garbage
+
+    %   ENSURE ALL OF THEM ARE TALKING TO YOU
+
+    %   They are talking? Good, start up everything else
+
+    %   Create file to log to (inside file handling class!!)
+
+else
+    sim_file = 'linear5m_missingSensors.csv';
+    
+    data = csvread(sim_file);
+    
+    
+    
+    
+end
+
+
+
+
+
+
 
 
 

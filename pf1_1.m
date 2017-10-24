@@ -106,12 +106,12 @@ disp('done with trash')
 
 % For data logging
 location = 'H224B';
-fname = sprintf('data/data_outside_%s.txt', datestr(now,'mm-dd-yyyy_HH-MM-SS'));
+fname = sprintf('data/data_outside_%s.csv', datestr(now,'mm-dd-yyyy_HH-MM-SS'));
 fid = fopen(fname, 'a+');
-fprintf(fid, '%d\t%d\t%d\t%d\t%d\t%d\n', sensorPositions(:, 1)); % print all x vals
-fprintf(fid, '%d\t%d\t%d\t%d\t%d\t%d\n', sensorPositions(:, 2)); % print all y vals
-%fprintf(fid, '%d\t%d\t%d\t%d\t%d\t%d\n', sensorPositions(1, 1), sensorPositions(1, 2), sensorPositions(1, 3), sensorPositions(1, 4), sensorPositions(1, 5), sensorPositions(1, 6)); % print all x vals
-%fprintf(fid, '%d\t%d\t%d\t%d\t%d\t%d\n', sensorPositions(2, 1), sensorPositions(2, 2), sensorPositions(2, 3), sensorPositions(2, 4), sensorPositions(2, 5), sensorPositions(2, 6)); % print all y vals
+fprintf(fid, '%f,%f,%f,%f,%f,%f\n', sensorPositions(:, 1)); % print all x vals
+fprintf(fid, '%f,%f,%f,%f,%f,%f\n', sensorPositions(:, 2)); % print all y vals
+%fprintf(fid, '%d,%d,%d,%d,%d,%d\n', sensorPositions(1, 1), sensorPositions(1, 2), sensorPositions(1, 3), sensorPositions(1, 4), sensorPositions(1, 5), sensorPositions(1, 6)); % print all x vals
+%fprintf(fid, '%d,%d,%d,%d,%d,%d\n', sensorPositions(2, 1), sensorPositions(2, 2), sensorPositions(2, 3), sensorPositions(2, 4), sensorPositions(2, 5), sensorPositions(2, 6)); % print all y vals
 
 % Make the pf
 pf = robotics.ParticleFilter;
@@ -211,7 +211,7 @@ while simulationTime < 50 % if time is not up
     
     measurement = cell2mat(readings);
     
-    fprintf(fid, '%f\t%f\t%f\t%f\t%f\t%f\t', measurement);
+    fprintf(fid, '%f,%f,%f,%f,%f,%f,', measurement);
     fprintf(fid, '\n');
     
     disp(readings);
