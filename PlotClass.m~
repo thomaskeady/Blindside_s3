@@ -1,0 +1,39 @@
+classdef PlotClass 
+    properties(SetAccess = public)
+        
+        
+    end
+    
+    properties(SetAccess = private)
+        FigureHandle
+        
+        
+        
+    end
+    
+    methods
+        function obj = PlotClass(x_dist, y_dist, bound)
+            obj.FigureHandle = figure('Name', 'Particle Filter');
+            ax = axes(obj.FigureHandle);
+            cla(ax);
+            
+            % customize the figure
+            obj.FigureHandle.Position = [100 100 1000 500];
+            axis(ax, 'equal');
+            xlim(ax, [-(bound+1),bound+1]);
+            ylim(ax, [-(bound+1),bound+1]);
+            grid(ax, 'on');
+            box(ax, 'on');    
+            
+            hold(ax, 'on')
+            
+            
+            
+        end
+        
+        
+        
+        
+    end
+    
+end
