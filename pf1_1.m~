@@ -212,7 +212,7 @@ while simulationTime < 50 % if time is not up
     measurement = cell2mat(readings);
     
     fprintf(fid, '%f\t%f\t%f\t%f\t%f\t%f\t', measurement);
-    fprintf(fid, '\n');
+    
     
     disp(readings);
     disp(measurement);

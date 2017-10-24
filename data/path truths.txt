@@ -1,10 +1,40 @@
 first path (linear):
-	start 
+	start 1m away down midline of truck
+	2 readings
+	
 	move back 1m for 1 reading
+	
+	2 reading
+	
 	repeat
+	
+	2 reading
+	
 	repeat
-	repeat?
+	
+	2 reading (4 meters)
+	
+	repeat
+	
+	2 reading 5m moving forward now
+	
+	
 	move forward 1m for 1 reading
+	
+	2 reading 4m away
+	
 	repeat
 	
+	2 reading 3m away
 	
+	repeat
+	
+	2 reading 2m away ( for sure)
+	
+	repeat
+	
+	2 reading 1m away ( for sure)
+	
+	
+	
+	(might have 1 more dummy)
