@@ -1,4 +1,4 @@
-classdef PlotClass < handle % tbh idk what < handle means but it made a warning go away
+classdef PlotClass 
     properties(SetAccess = public)
         
         
@@ -19,9 +19,6 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
         
         % Actual position (if known)
         ActualPosition
-        
-        % For circles when simulating
-        CirclePlots
         
         
     end
@@ -57,7 +54,7 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
             
         end % Constructor
         
-        function updatePlotSim(obj, particleFilter, t, currentBestGuess, actualPosition)
+        function updatePlotSim(obj, particleFilter, currentBestGuess, actualPosition)
             
             particles = particleFilter.Particles;
             obj.Particles.XData = particles(1:end,1);
@@ -70,17 +67,6 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
             obj.ActualPosition.YData = actualPosition(2);
             
             
-            theta = linspace(0, 2*pi);
-            for i = 1:length(measurement)
-                obj.CirclePlots{i}.XData = measurement(i,1)*cos(theta) ...
-                    + sensorPositions(i,1);
-                obj.CirclePlots{i}.YData = measurement(i,1)*sin(theta) ...
-                    + sensorPositions(i,2);
-            end
-
-            ax = get(plotFigureHandle, 'currentaxes');
-            title(ax, ['t = ', num2str(t)]);
-            
         end
         
         
@@ -92,7 +78,8 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
             
             obj.BestGuess.XData = currentBestGuess(1);
             obj.BestGuess.YData = currentBestGuess(2);
-                        
+            
+            
             
         end
         
