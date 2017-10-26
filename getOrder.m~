@@ -1,0 +1,46 @@
+
+clear all;
+close all;
+
+orig = seriallist;
+
+%disp(old);
+%disp(class(old));
+
+TF = startsWith(orig, '/dev/tty.usbserial-');
+
+filtered = orig(TF);
+
+assert(length(filtered) == 1);
+
+disp(filtered);
+
+%finallist;
+
+fcount = 2;
+
+stop = 'a';
+
+while (stop ~= 'd')
+    
+    new = seriallist;
+    TF = startsWith(new, '/dev/tty.usbserial-');
+    nf = new(TF);
+    
+    disp(nf);
+    disp('filtered');
+    disp(filtered);
+    disp('done filtered');
+    
+    diff = setdiff(nf, filtered);
+
+    disp(size(diff));
+    disp(diff);
+
+    
+    
+    stop = input('s for another sensor, d for done: ', 's');
+end
+
+clear all;
+close all;
