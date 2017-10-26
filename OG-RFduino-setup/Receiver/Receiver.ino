@@ -30,7 +30,8 @@ int receivedCount = 0;
 bool gotNew = false;
 
 void setup() {
-  Serial.begin(9600);
+  //Serial.begin(9600);
+  Serial.begin(19200);
 
   pinMode(led, OUTPUT);
 

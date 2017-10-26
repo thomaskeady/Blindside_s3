@@ -41,9 +41,16 @@ classdef Sensors
 %             obj.addrs{5} = '/dev/tty.usbserial-DN00D41X';
 %             obj.addrs{6} = '/dev/tty.usbserial-DN00CVZK';
 
-            obj.addrs{1} = '/dev/tty.usbserial-DN00D3MA'; 
-            obj.addrs{2} = '/dev/tty.usbserial-DN00CZUI';
-            obj.addrs{3} = '/dev/tty.usbserial-DN00D2RN';
+            %obj.addrs{1} = '/dev/tty.usbserial-DN00D3MA'; 
+            %obj.addrs{2} = '/dev/tty.usbserial-DN00CZUI';
+            %obj.addrs{3} = '/dev/tty.usbserial-DN00D2RN';
+            
+            obj.addrs{1} = '/dev/tty.usbserial-DN00CSPC';
+            obj.addrs{2} = '/dev/tty.usbserial-DN00D2RN';
+%             obj.addrs{3} = '/dev/tty.usbserial-DN00CVZK';
+%             obj.addrs{4} = '/dev/tty.usbserial-DN00B9FJ';
+%             obj.addrs{5} = '/dev/tty.usbserial-DN00CZUI';
+%             obj.addrs{6} = '/dev/tty.usbserial-DN00D3MA';
 
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             
@@ -56,7 +63,8 @@ classdef Sensors
             disp('Opening receivers')
             
             for i = 1:NUM_SENSORS
-                obj.ports{i} = serial(obj.addrs{i}, 'BaudRate', 9600);
+                %obj.ports{i} = serial(obj.addrs{i}, 'BaudRate', 9600);
+                obj.ports{i} = serial(obj.addrs{i}, 'BaudRate', 19200);
                 fopen(obj.ports{i});
                 set(obj.ports{i}, 'Timeout', 2);
             end
@@ -65,7 +73,7 @@ classdef Sensors
 
             for t = 1:5 % Clearing startup glitches
                 for i = 1:NUM_SENSORS
-                    disp(i);
+                    disp(sprintf('# %d', i));
                     fwrite(obj.ports{i}, 'A');
                     %fwrite(obj.ports{i}, 'A');
                     [trash, count, msg] = fscanf(obj.ports{i}, '%d');
@@ -87,15 +95,23 @@ classdef Sensors
         
         function reading = getReading(obj)
             
+            reading = zeros(1, obj.NUM_SENSORS);
+            
+            disp('requested reading');
             for i = 1:obj.NUM_SENSORS
-                disp(i);
+                %disp(i);
                 fwrite(obj.ports{i}, 'A');
                 % Setting reading here is sufficient for return
                 %pause(1);
-                reading = fscanf(obj.ports{i}, '%d'); 
-                disp(reading);
+%                reading(i) = fscanf(obj.ports{i}, '%d'); 
+                buffer = fscanf(obj.ports{i}, '%d'); 
+                disp('disping buffer');
+                disp(buffer);
+                disp('done disping buffer');
+                reading(i) = buffer;
+                %disp(reading);
             end 
-            
+            disp('returning reading');
         end
         
         

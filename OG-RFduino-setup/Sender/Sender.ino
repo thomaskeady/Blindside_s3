@@ -26,12 +26,12 @@ void setup() {
   pinMode(led, OUTPUT);
 }
 
+bool state = LOW;
+
 void loop() {
   SimbleeCOM.send(payload, sizeof(payload));
-  digitalWrite(led, HIGH);
-  delay(50);
-  SimbleeCOM.send(payload, sizeof(payload));
-  digitalWrite(led, LOW);
-  delay(50);
+  digitalWrite(led, state);
+  state = !state;
+  delay(5);
 }
   
