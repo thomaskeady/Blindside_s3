@@ -40,8 +40,10 @@ classdef Sensors
 %             obj.addrs{4} = '/dev/tty.usbserial-DN00B9FJ';
 %             obj.addrs{5} = '/dev/tty.usbserial-DN00D41X';
 %             obj.addrs{6} = '/dev/tty.usbserial-DN00CVZK';
-            
-            obj.addrs{1} = '/dev/tty.usbserial-DN00D3MA';
+
+            obj.addrs{1} = '/dev/tty.usbserial-DN00D3MA'; 
+            obj.addrs{2} = '/dev/tty.usbserial-DN00CZUI';
+            obj.addrs{3} = '/dev/tty.usbserial-DN00D2RN';
 
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             
@@ -53,29 +55,23 @@ classdef Sensors
             
             disp('Opening receivers')
             
-%             for i = 1:NUM_RECEIVERS
-%                 ports{i} = serial(addrs{i}, 'BaudRate', 115200);
-%                 foepn(ports{i});
-%                 set(ports{i}, 'Timeout', 2);
-%             end
-            
-            obj.ports = serial(obj.addrs, 'BaudRate', 115200);
-            fopen(obj.ports);
-            set(obj.ports, 'Timeout', 2);
+            for i = 1:NUM_SENSORS
+                obj.ports{i} = serial(obj.addrs{i}, 'BaudRate', 9600);
+                fopen(obj.ports{i});
+                set(obj.ports{i}, 'Timeout', 2);
+            end
             
             trash = cell(NUM_SENSORS, 1);
 
             for t = 1:5 % Clearing startup glitches
-%                 for i = 1:NUM_RECEIVERS
-% 
-%                     fwrite(ports{i}, 'A');
-%                     %trash = fscanf(ports{i}, '%d');
-%                     trash{i} = fscanf(ports{i}, '%d');
-% 
-%                 end
-
-                fwrite(obj.ports, 'A');
-                trash = fscanf(obj.ports, '%d');
+                for i = 1:NUM_SENSORS
+                    disp(i);
+                    fwrite(obj.ports{i}, 'A');
+                    %fwrite(obj.ports{i}, 'A');
+                    [trash, count, msg] = fscanf(obj.ports{i}, '%d');
+                    disp(count);
+                    disp(msg);
+                end
                 
             end
 
@@ -91,10 +87,14 @@ classdef Sensors
         
         function reading = getReading(obj)
             
-            fwrite(obj.ports, 'A');
-            % Setting reading here is sufficient for return
-            reading = fscanf(obj.ports, '%d'); 
-            disp(reading);
+            for i = 1:obj.NUM_SENSORS
+                disp(i);
+                fwrite(obj.ports{i}, 'A');
+                % Setting reading here is sufficient for return
+                %pause(1);
+                reading = fscanf(obj.ports{i}, '%d'); 
+                disp(reading);
+            end 
             
         end
         

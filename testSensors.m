@@ -1,6 +1,6 @@
 
 
-NUM_SENSORS = 1;
+NUM_SENSORS = 3;
 
 mySens = Sensors(NUM_SENSORS);
 
