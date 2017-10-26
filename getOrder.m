@@ -33,7 +33,8 @@ while (stop ~= 'd')
     disp('done filtered');
     
     diff = setdiff(nf, filtered);
-
+    rdiff = setdiff(filtered, nf);
+    
     disp(size(diff));
     disp(diff);
 
@@ -50,6 +51,14 @@ while (stop ~= 'd')
     
     stop = input('s for another sensor, d for done: ', 's');
 end
+
+disp('\n');
+
+for i = 1:length(filtered) 
+    disp(sprintf('obj.addrs{%d} = ''%s'';', i, filtered(i)));
+end
+
+disp('\n');
 
 clear all;
 close all;
