@@ -17,6 +17,13 @@ function main()
     fprintf(fid, '%f,%f,%f,%f,%f,%f\n', sensorPositions(:, 1)); % print all x vals
     fprintf(fid, '%f,%f,%f,%f,%f,%f\n', sensorPositions(:, 2)); % print all y vals
     
+    %%%% TEST TEST TEST apparently this is scalable? 
+    %https://stackoverflow.com/questions/6024775/print-a-vector-with-variable-number-of-elements-using-sprintf
+    %fprintf(fid, strtrim(sprintf('%f, ' sensorPositions(:, 1)))); % 
+    %fprintf(fid, '\n');
+    %fprintf(strtrim(sprintf('%f, ' sensorPositions(:, 2))));
+    %fprintf(fid, fid, '\n');
+    
     mySens = Sensors(NUM_SENSORS);
 
     pause;
