@@ -32,7 +32,7 @@ classdef Sensors
 %             Count counterclockwise
             
             %%%%%%%%%%%%%%%%%% INSERT ADDR ORDER HERE %%%%%%%%%%%%%%%%%%
-            % Get addr order by running ????
+            % Get addr order by running getOrder.m
             
 %             obj.addrs{1} = '/dev/tty.usbserial-DN00D3MA';
 %             obj.addrs{2} = '/dev/tty.usbserial-DN00D2RN';
