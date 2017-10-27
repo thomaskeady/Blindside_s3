@@ -45,12 +45,16 @@ classdef Sensors
             %obj.addrs{2} = '/dev/tty.usbserial-DN00CZUI';
             %obj.addrs{3} = '/dev/tty.usbserial-DN00D2RN';
             
-            obj.addrs{1} = '/dev/tty.usbserial-DN00CSPC';
-            obj.addrs{2} = '/dev/tty.usbserial-DN00D2RN';
+%            obj.addrs{1} = '/dev/tty.usbserial-DN00CSPC';
+%            obj.addrs{2} = '/dev/tty.usbserial-DN00D2RN';
 %             obj.addrs{3} = '/dev/tty.usbserial-DN00CVZK';
 %             obj.addrs{4} = '/dev/tty.usbserial-DN00B9FJ';
 %             obj.addrs{5} = '/dev/tty.usbserial-DN00CZUI';
 %             obj.addrs{6} = '/dev/tty.usbserial-DN00D3MA';
+
+            obj.addrs{3} = '/dev/tty.usbserial-DN00D2RN';
+            obj.addrs{2} = '/dev/tty.usbserial-DN00CVZK';
+            obj.addrs{1} = '/dev/tty.usbserial-DN00B9FJ';
 
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             
@@ -95,22 +99,50 @@ classdef Sensors
         
         function reading = getReading(obj)
             
-            reading = zeros(1, obj.NUM_SENSORS);
+            reading = zeros(1, obj.NUM_SENSORS + 1);
             
             disp('requested reading');
-            for i = 1:obj.NUM_SENSORS
+%             for i = 1:obj.NUM_SENSORS
+%                 %disp(i);
+%                 fwrite(obj.ports{i}, 'A');
+% %                reading(i) = fscanf(obj.ports{i}, '%d'); 
+%                 [buffer, count, msg] = fscanf(obj.ports{i}, '%d'); 
+%                 
+%                 
+%                 disp('disping buffer');
+%                 disp(buffer);
+%                 disp('done disping buffer');
+%                 
+%                 
+%                 reading(i) = buffer;
+%                 %disp(reading);
+%             end 
                 %disp(i);
-                fwrite(obj.ports{i}, 'A');
-                % Setting reading here is sufficient for return
-                %pause(1);
-%                reading(i) = fscanf(obj.ports{i}, '%d'); 
-                buffer = fscanf(obj.ports{i}, '%d'); 
-                disp('disping buffer');
-                disp(buffer);
-                disp('done disping buffer');
-                reading(i) = buffer;
-                %disp(reading);
-            end 
+
+            fwrite(obj.ports{2}, 'A');
+            buffer = fscanf(obj.ports{1}, '%d');
+            disp('pre-buffer');
+            disp(buffer);
+            disp('post-buffer');
+            if (buffer)
+                reading(1) = buffer;
+            end
+            
+            fwrite(obj.ports{3}, 'A');
+            buffer = fscanf(obj.ports{2}, '%d');
+            disp('pre-buffer');
+            disp(buffer);
+            disp('post-buffer');
+            reading(2) = buffer;
+            
+            fwrite(obj.ports{4}, 'A');
+            buffer = fscanf(obj.ports{3}, '%d');
+            disp('pre-buffer');
+            disp(buffer);
+            disp('post-buffer');
+            reading(3) = buffer;
+                
+                
             disp('returning reading');
         end
         

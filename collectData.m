@@ -3,7 +3,7 @@ main();
 function main()    
     % Collect data and save it to a file
 
-    NUM_SENSORS = 2;
+    NUM_SENSORS = 3;
 
     % 0 for hand-prompted
     % 1 for sample every dt seconds
@@ -40,10 +40,10 @@ function main()
     
     mySens = Sensors(NUM_SENSORS);
 
-    pause;
-
     % Will catch any ctrl-c inside the loop
     cleanupobj = onCleanup(@() cleanmeup(fid));
+    
+    pause;
 
     tic
     

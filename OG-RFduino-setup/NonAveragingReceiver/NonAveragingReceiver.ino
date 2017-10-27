@@ -15,23 +15,20 @@
  */
 
 #include "SimbleeCOM.h"
-//#include <QueueList.h>
-#include <QList.h>
-#include "QList.cpp"
 
-const int SAMPLES_TO_AVG = 10;
+//const int SAMPLES_TO_AVG = 10;
 
 int led = 3;
 bool led_state = false;
 
 bool serialing = false;
-int grssi = 0;
+volatile int grssi = 0;
 int receivedCount = 0;
-bool gotNew = false;
+//bool gotNew = false;
 
 void setup() {
-  //Serial.begin(9600);
-  Serial.begin(19200);
+  Serial.begin(9600);
+  //Serial.begin(19200);
 
   pinMode(led, OUTPUT);
 
@@ -41,20 +38,19 @@ void setup() {
   //noInterrupts();
 }
 
-//QueueList<int> queue;
-QList<int> queue;
 
 void loop() {
 
   if (Serial.available() > 0) {
     serialing = true;
+    //delay(500);
     //Serial.println(grssi/receivedCount);
     //Serial.println(receivedCount);
     //Serial.println(grssi/queue.count()); // Any reason to clear queue after? for all new data?
-    Serial.println(grssi/queue.size()); // Any reason to clear queue after? for all new data?
+    Serial.println(grssi); // Any reason to clear queue after? for all new data?
     // queue.count() should always = 10 but if interrupt occurs between these two ifs
     // then it would be 11, lets not risk
-    
+
     while (Serial.available() != 0) {
       Serial.read();
     }
@@ -63,27 +59,17 @@ void loop() {
     //grssi = 0;
   }
 
-  if (gotNew) { // Separate ifs for startup when queue is empty
-    if (queue.size() == SAMPLES_TO_AVG + 1) {
-      //grssi -= queue.pop(); // Subtract the oldest value
-      grssi -= queue.back(); // Subtract the oldest value
-      queue.pop_back(); // Remove the oldest value
-    }
-    gotNew = false;
-  }
-  
 }
 
 void SimbleeCOM_onReceive(unsigned int esn, const char *payload, int len, int rssi)
 {
   if (!serialing) {
-    grssi += rssi;
-    //grssi = rssi;
+    //grssi += rssi;
+    grssi = rssi;
     //receivedCount++;
     //queue.push(rssi);
-    queue.push_front(rssi);
-    gotNew = true;
-    
+    //gotNew = true;
+
   } else {
     led_state = !led_state;
     if (led_state) {
