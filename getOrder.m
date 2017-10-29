@@ -1,6 +1,7 @@
 
 clear all;
-close all;
+clos
+e all;
 
 disp(' Start with the back left plugged in and go counterclockwise');
 disp(' If the first sensor isn''t plugged in, plug it in now');

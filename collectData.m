@@ -68,6 +68,7 @@ end
 % After ctrl-c goes here
 function cleanmeup(fid)
     
+    disp('deleting instrfindall');
     delete(instrfindall);
     %clear all;
 

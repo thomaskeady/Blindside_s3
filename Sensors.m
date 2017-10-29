@@ -81,6 +81,14 @@ classdef Sensors
                     fwrite(obj.ports{i}, 'A');
                     %fwrite(obj.ports{i}, 'A');
                     [trash, count, msg] = fscanf(obj.ports{i}, '%d');
+                    %disp(size(msg));
+                    if strcmp(msg, 'A timeout occurred before the Terminator was reached.')
+                        disp('it was true!!');
+                        fwrite(obj.ports{i}, 'A');
+                        %fwrite(obj.ports{i}, 'A');
+                        [trash, count, msg] = fscanf(obj.ports{i}, '%d');
+                    end
+                    
                     disp(count);
                     disp(msg);
                 end
@@ -99,49 +107,54 @@ classdef Sensors
         
         function reading = getReading(obj)
             
-            reading = zeros(1, obj.NUM_SENSORS + 1);
+            reading = zeros(1, obj.NUM_SENSORS);
             
             disp('requested reading');
-%             for i = 1:obj.NUM_SENSORS
-%                 %disp(i);
-%                 fwrite(obj.ports{i}, 'A');
-% %                reading(i) = fscanf(obj.ports{i}, '%d'); 
-%                 [buffer, count, msg] = fscanf(obj.ports{i}, '%d'); 
-%                 
-%                 
-%                 disp('disping buffer');
-%                 disp(buffer);
-%                 disp('done disping buffer');
-%                 
-%                 
-%                 reading(i) = buffer;
-%                 %disp(reading);
-%             end 
+            for i = 1:obj.NUM_SENSORS
                 %disp(i);
-
-            fwrite(obj.ports{2}, 'A');
-            buffer = fscanf(obj.ports{1}, '%d');
-            disp('pre-buffer');
-            disp(buffer);
-            disp('post-buffer');
-            if (buffer)
-                reading(1) = buffer;
-            end
-            
-            fwrite(obj.ports{3}, 'A');
-            buffer = fscanf(obj.ports{2}, '%d');
-            disp('pre-buffer');
-            disp(buffer);
-            disp('post-buffer');
-            reading(2) = buffer;
-            
-            fwrite(obj.ports{4}, 'A');
-            buffer = fscanf(obj.ports{3}, '%d');
-            disp('pre-buffer');
-            disp(buffer);
-            disp('post-buffer');
-            reading(3) = buffer;
+                fwrite(obj.ports{i}, 'A');
+%                reading(i) = fscanf(obj.ports{i}, '%d'); 
+                [buffer, count, msg] = fscanf(obj.ports{i}, '%d'); 
                 
+                if strcmp(msg, 'A timeout occurred before the Terminator was reached.')
+                    %disp('it was true!!');
+                    fwrite(obj.ports{i}, 'A');
+                    %fwrite(obj.ports{i}, 'A');
+                    [buffer, count, msg] = fscanf(obj.ports{i}, '%d');
+                
+                disp('disping buffer');
+                disp(buffer);
+                disp('done disping buffer');
+                
+                
+                reading(i) = buffer;
+                %disp(reading);
+            end 
+                %disp(i);
+% 
+%             fwrite(obj.ports{2}, 'A');
+%             buffer = fscanf(obj.ports{1}, '%d');
+%             disp('pre-buffer');
+%             disp(buffer);
+%             disp('post-buffer');
+%             if (buffer)
+%                 reading(1) = buffer;
+%             end
+%             
+%             fwrite(obj.ports{3}, 'A');
+%             buffer = fscanf(obj.ports{2}, '%d');
+%             disp('pre-buffer');
+%             disp(buffer);
+%             disp('post-buffer');
+%             reading(2) = buffer;
+%             
+%             fwrite(obj.ports{4}, 'A');
+%             buffer = fscanf(obj.ports{3}, '%d');
+%             disp('pre-buffer');
+%             disp(buffer);
+%             disp('post-buffer');
+%             reading(3) = buffer;
+%                 
                 
             disp('returning reading');
         end
