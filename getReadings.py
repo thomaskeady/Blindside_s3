@@ -16,7 +16,7 @@ for i in range(0,NUM_SENSORS):
 
 print('Done with opening');
 
-for l in range(0, 1000):
+for l in range(0, 10):
     for i in range(0, NUM_SENSORS):
         ports[i].write('A');
         print('sent');

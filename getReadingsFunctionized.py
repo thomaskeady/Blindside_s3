@@ -18,7 +18,9 @@ def getReadings():
 
     print('Done with opening');
 
-    for l in range(0, 1000):
+    toReturn = list();
+
+    for l in range(0, 1):
         for i in range(0, NUM_SENSORS):
             ports[i].write('A');
             print('sent');
@@ -27,8 +29,11 @@ def getReadings():
             print('reading');
             reading = ports[i].readline();
             print('done reading');
+            toReturn.append(reading);
             #printf("%d gave %d", i, reading);
             print '{0} gave {1}'.format(i, reading);
+
+    return toReturn;
 
 
 if __name__ == '__main__':
