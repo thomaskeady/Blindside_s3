@@ -121,7 +121,8 @@ classdef Sensors
                     fwrite(obj.ports{i}, 'A');
                     %fwrite(obj.ports{i}, 'A');
                     [buffer, count, msg] = fscanf(obj.ports{i}, '%d');
-                
+                end
+                    
                 disp('disping buffer');
                 disp(buffer);
                 disp('done disping buffer');
