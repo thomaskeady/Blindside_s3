@@ -1,14 +1,14 @@
 import serial
 import time
 
-NUM_SENSORS = 3;
+NUM_SENSORS = 1;
 
 ports = list();
 
 addrs = [
-    '/dev/tty.usbserial-DN00D2RN',
-    '/dev/tty.usbserial-DN00CVZK',
-    '/dev/tty.usbserial-DN00B9FJ'
+    '/dev/tty.usbserial-DN00D2RN'#,
+    #'/dev/tty.usbserial-DN00CVZK',
+    #'/dev/tty.usbserial-DN00B9FJ'
 ];
 
 for i in range(0,NUM_SENSORS):
@@ -20,7 +20,7 @@ for l in range(0, 1000):
     for i in range(0, NUM_SENSORS):
         ports[i].write('A');
         print('sent');
-        time.sleep(0.01);
+        #time.sleep(0.01);
         #reading = ports[i].read(4);
         print('reading');
         reading = ports[i].readline();
