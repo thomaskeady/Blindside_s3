@@ -22,3 +22,4 @@ ended at 10:30
 
 Note this should be at 10 readings/sec, did actually achieve?
 
+2RN is back right, went counterclockwise around (from top)
