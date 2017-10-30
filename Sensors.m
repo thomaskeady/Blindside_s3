@@ -59,6 +59,8 @@ classdef Sensors
             obj.addrs{5} = '/dev/tty.usbserial-DN00CZUI';
             obj.addrs{6} = '/dev/tty.usbserial-DN00CSPC';
 
+            
+            
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             
             amsg = sprintf('length(obj.addrs) != NUM_RECEIVERS (%d != %d)  ', length(obj.addrs), NUM_SENSORS);
@@ -67,11 +69,18 @@ classdef Sensors
             
             assert(length(obj.addrs) == NUM_SENSORS, amsg);
             
+            obj.addrs{7} = '/dev/tty.usbserial-DN00D3MA'; % dummy one
+            
             disp('Opening receivers')
             
-            for i = 1:NUM_SENSORS
+            %%%%%%%%% FIX HARDCORING 
+            obj.ports{1} = serial(obj.addrs{7}, 'BaudRate', 19200);
+            fopen(obj.ports{1});
+            set(obj.ports{1}, 'Timeout', 0.1); % Can make smaller?
+            
+            for i = 2:NUM_SENSORS + 1
                 %obj.ports{i} = serial(obj.addrs{i}, 'BaudRate', 9600);
-                obj.ports{i} = serial(obj.addrs{i}, 'BaudRate', 19200);
+                obj.ports{i} = serial(obj.addrs{i-1}, 'BaudRate', 19200);
                 fopen(obj.ports{i});
                 set(obj.ports{i}, 'Timeout', 2);
             end
@@ -79,18 +88,28 @@ classdef Sensors
             trash = cell(NUM_SENSORS, 1);
 
             for t = 1:5 % Clearing startup glitches
-                for i = 1:NUM_SENSORS
+                
+%                fwrite(obj.ports{1}, 'A');
+%                [trash, count, msg] = fscanf(obj.ports{1}, '%d'); 
+                
+                for i = 1:NUM_SENSORS+1
+                    %i = i + 1;
                     disp(sprintf('# %d', i));
                     fwrite(obj.ports{i}, 'A');
                     %fwrite(obj.ports{i}, 'A');
                     [trash, count, msg] = fscanf(obj.ports{i}, '%d');
                     %disp(size(msg));
-                    if strcmp(msg, 'A timeout occurred before the Terminator was reached.')
-                        disp('it was true!!');
-                        fwrite(obj.ports{i}, 'A');
-                        %fwrite(obj.ports{i}, 'A');
-                        [trash, count, msg] = fscanf(obj.ports{i}, '%d');
+                    if i ~= 1
+                        if strcmp(msg, 'A timeout occurred before the Terminator was reached.')
+                            disp('it was true!!');
+                            fwrite(obj.ports{i}, 'A');
+                            %fwrite(obj.ports{i}, 'A');
+                            [trash, count, msg] = fscanf(obj.ports{i}, '%d');
+                        end
+                    else
+                        disp('skipping 1');
                     end
+                        
                     
                     disp(count);
                     disp(msg);
@@ -112,8 +131,12 @@ classdef Sensors
             
             reading = zeros(1, obj.NUM_SENSORS);
             
+            fwrite(obj.ports{1}, 'A');
+            [buffer, count, msg] = fscanf(obj.ports{1}, '%d'); 
+            
             disp('requested reading');
             for i = 1:obj.NUM_SENSORS
+                i = i + 1;
                 %disp(i);
                 fwrite(obj.ports{i}, 'A');
 %                reading(i) = fscanf(obj.ports{i}, '%d'); 
