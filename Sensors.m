@@ -52,9 +52,12 @@ classdef Sensors
 %             obj.addrs{5} = '/dev/tty.usbserial-DN00CZUI';
 %             obj.addrs{6} = '/dev/tty.usbserial-DN00D3MA';
 
-            obj.addrs{3} = '/dev/tty.usbserial-DN00D2RN';
+            obj.addrs{1} = '/dev/tty.usbserial-DN00D2RN';
             obj.addrs{2} = '/dev/tty.usbserial-DN00CVZK';
-            obj.addrs{1} = '/dev/tty.usbserial-DN00B9FJ';
+            obj.addrs{3} = '/dev/tty.usbserial-DN00B9FJ';
+            obj.addrs{4} = '/dev/tty.usbserial-DN00CZUI';
+            obj.addrs{5} = '/dev/tty.usbserial-DN00D41X';
+            obj.addrs{6} = '/dev/tty.usbserial-DN00CSPC';
 
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             
@@ -67,8 +70,8 @@ classdef Sensors
             disp('Opening receivers')
             
             for i = 1:NUM_SENSORS
-                %obj.ports{i} = serial(obj.addrs{i}, 'BaudRate', 9600);
-                obj.ports{i} = serial(obj.addrs{i}, 'BaudRate', 19200);
+                obj.ports{i} = serial(obj.addrs{i}, 'BaudRate', 9600);
+                %obj.ports{i} = serial(obj.addrs{i}, 'BaudRate', 19200);
                 fopen(obj.ports{i});
                 set(obj.ports{i}, 'Timeout', 2);
             end

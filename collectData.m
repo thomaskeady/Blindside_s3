@@ -3,7 +3,7 @@ main();
 function main()    
     % Collect data and save it to a file
 
-    NUM_SENSORS = 3;
+    NUM_SENSORS = 6;
 
     % 0 for hand-prompted
     % 1 for sample every dt seconds
