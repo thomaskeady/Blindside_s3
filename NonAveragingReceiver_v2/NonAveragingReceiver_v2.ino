@@ -2,8 +2,8 @@
 
 void setup() {
   Serial.begin(19200); // set the baud rate
-  //Serial.println("Ready"); // print "Ready" once
   SimbleeCOM.begin();
+  Serial.println("Ready"); // print "Ready" once
 }
 
 volatile bool serialing = false;

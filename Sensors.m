@@ -52,9 +52,12 @@ classdef Sensors
 %             obj.addrs{5} = '/dev/tty.usbserial-DN00CZUI';
 %             obj.addrs{6} = '/dev/tty.usbserial-DN00D3MA';
 
-            obj.addrs{3} = '/dev/tty.usbserial-DN00D2RN';
+            obj.addrs{1} = '/dev/tty.usbserial-DN00D2RN';
             obj.addrs{2} = '/dev/tty.usbserial-DN00CVZK';
-            obj.addrs{1} = '/dev/tty.usbserial-DN00B9FJ';
+            obj.addrs{3} = '/dev/tty.usbserial-DN00B9FJ';
+            obj.addrs{4} = '/dev/tty.usbserial-DN00D41X';
+            obj.addrs{5} = '/dev/tty.usbserial-DN00CZUI';
+            obj.addrs{6} = '/dev/tty.usbserial-DN00CSPC';
 
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             
@@ -117,7 +120,7 @@ classdef Sensors
                 [buffer, count, msg] = fscanf(obj.ports{i}, '%d'); 
                 
                 if strcmp(msg, 'A timeout occurred before the Terminator was reached.')
-                    %disp('it was true!!');
+                    disp('true in reading');
                     fwrite(obj.ports{i}, 'A');
                     %fwrite(obj.ports{i}, 'A');
                     [buffer, count, msg] = fscanf(obj.ports{i}, '%d');
