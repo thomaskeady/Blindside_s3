@@ -43,6 +43,8 @@ function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions)
     
     for i = 1:numSensors
         
+        disp(i);
+        
         % Broken down
         coeff = (1/sqrt(2*pi*stddev^2));
         x_pos = (predictParticles(1, :) - sensorPositions(i, 1)).^2;

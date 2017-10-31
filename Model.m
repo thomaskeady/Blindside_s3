@@ -3,13 +3,14 @@ classdef Model
     
     properties(SetAccess = public)
         % The particle filter
-        pf = robotics.ParticleFiler % Is this allowed here?
+        %pf = robotics.ParticleFilter % Is this allowed here?
+        pf
         
         % # of particles in the filter
-        NUM_PARTICLES
+        NUM_PARTICLES = 1000
         
         % Boundaries of the system, square with edge 2*bound
-        bound
+        bound = 8
         
         % sensor positions (x, y)
         sensorPositions
@@ -29,6 +30,13 @@ classdef Model
         function obj = Model(sensorPositions)
             %pf = robotics.ParticleFilter; % Do stuff like this in the
             %properties
+            obj.pf = robotics.ParticleFilter;
+            
+            stateBounds = [
+                -obj.bound, obj.bound;
+                -obj.bound, obj.bound];
+            initialize(obj.pf, obj.NUM_PARTICLES, stateBounds);
+            
             obj.pf.StateEstimationMethod = 'maxweight'; % is this allowed in the properties?
             obj.pf.ResamplingMethod = 'systematic'; 
             
@@ -36,6 +44,8 @@ classdef Model
             obj.pf.MeasurementLikelihoodFcn = @mlf1_1;
             
             obj.sensorPositions = sensorPositions;
+            
+            
             
         end
         

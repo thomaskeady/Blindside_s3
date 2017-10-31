@@ -55,28 +55,25 @@ else
     
     %disp(sensorPositions);
     
-    
+    % Create plot class
+    if (PLOT)
+        myPlot = PlotClass(max(sensorPositions(1,:)), max(sensorPositions(2,:)), ...
+            8, ... % Bound, where put for now?
+            LIVE); % Not live if in this branch, leave for ease of reuse
+        
+    end
     
     
     % Create model (includes particle filter, mapping RSSI-m, etc...
     model = Model(sensorPositions);
     
-    % Create plot class
-    if (PLOT)
-        myPlot = PlotClass(max(sensorPositions(1,:)), max(sensorPositions(2,:)), ...
-            model.bound, ... 
-            LIVE); % Not live if in this branch, leave for ease of reuse
-        
-        
-    end
-    
     % Loop over data
-    for s=3:length(data)
-        [statePred, covPred] = predict(model.pf, model.noise);
+    for s=1:length(data)
+        [statePred, covPred] = predict(pf, model.noise);
         
-        [stateCorrected, covCorrected] = correct(model.pf, data(s, 3:2+NUM_RECEIVERS), sensorPositions);
+        [stateCorrected, covCorrected] = correct(pf, data(s, 3:2+NUM_RECEIVERS), sensorPositions);
         
-        myPlot.updatePlotSim(pf, data(s,1), stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS));
+        updatePlotSim(obj, particleFilter, t, currentBestGuess, actualPosition)
         
     end
     
