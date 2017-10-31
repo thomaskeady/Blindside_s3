@@ -18,6 +18,10 @@ classdef Model
         % Noise parameter
         noise = 3
         
+        % RSSI to m conversion coeffs
+        RSSI_TO_M_COEFF = 0.00482998
+        RSSI_TO_M_EXP = -0.104954
+        
     end
     
     properties(SetAccess = private)

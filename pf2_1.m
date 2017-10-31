@@ -70,13 +70,25 @@ else
         
     end
     
+    disp('starting loop');
+    
     % Loop over data
     for s=3:length(data)
         [statePred, covPred] = predict(model.pf, model.noise);
+        disp('exited predict');
         
-        [stateCorrected, covCorrected] = correct(model.pf, data(s, 3:2+NUM_RECEIVERS), sensorPositions);
+        mapped = model.RSSI_TO_M_COEFF * exp(model.RSSI_TO_M_EXP * data(s, 3:2+NUM_RECEIVERS));
         
-        myPlot.updatePlotSim(pf, data(s,1), stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS));
+        %[stateCorrected, covCorrected] = correct(model.pf, data(s, 3:2+NUM_RECEIVERS), sensorPositions);
+        [stateCorrected, covCorrected] = correct(model.pf, mapped, sensorPositions);
+        disp('exited correct');
+        
+        disp(stateCorrected);
+        
+        %NOW JUST COMPARE ESTIMATED TO TRUTH, OUTPUT IT 
+        
+        %myPlot.updatePlotSim(model.pf, data(s,1), stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS));
+        %disp('updated plot');
         
     end
     

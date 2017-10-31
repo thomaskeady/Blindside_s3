@@ -69,16 +69,16 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
             obj.ActualPosition.XData = actualPosition(1);
             obj.ActualPosition.YData = actualPosition(2);
             
-            
-            theta = linspace(0, 2*pi);
-            for i = 1:length(measurement)
-                obj.CirclePlots{i}.XData = measurement(i,1)*cos(theta) ...
-                    + sensorPositions(i,1);
-                obj.CirclePlots{i}.YData = measurement(i,1)*sin(theta) ...
-                    + sensorPositions(i,2);
-            end
+            % BRING THIS BACK BY ADDING MEASUREMENTS TO INPUTS
+%             theta = linspace(0, 2*pi); 
+%             for i = 1:length(measurement)
+%                 obj.CirclePlots{i}.XData = measurement(i,1)*cos(theta) ...
+%                     + sensorPositions(i,1);
+%                 obj.CirclePlots{i}.YData = measurement(i,1)*sin(theta) ...
+%                     + sensorPositions(i,2);
+%             end
 
-            ax = get(plotFigureHandle, 'currentaxes');
+            ax = get(obj.FigureHandle, 'currentaxes');
             title(ax, ['t = ', num2str(t)]);
             
         end

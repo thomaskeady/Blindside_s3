@@ -29,6 +29,9 @@ function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions)
     numParticles = length(predictParticles);
     numSensors = length(measurement);
     
+%     disp(size(measurement));
+%     disp(size(sensorPositions));
+    
     % Weight given to each particle by each sensor
     %sensor = double.empty(numSensors, numParticles);
     sensor = zeros(numSensors, numParticles);
@@ -43,12 +46,11 @@ function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions)
     
     for i = 1:numSensors
         
-        disp(i);
-        
         % Broken down
         coeff = (1/sqrt(2*pi*stddev^2));
-        x_pos = (predictParticles(1, :) - sensorPositions(i, 1)).^2;
-        y_pos = (predictParticles(2, :) - sensorPositions(i, 2)).^2;
+        x_pos = (predictParticles(1, :) ...
+            - sensorPositions(1, i)).^2;
+        y_pos = (predictParticles(2, :) - sensorPositions(2, i)).^2;
         radius = dist(i)^2;
         denom = 2*stddev^2;
         
@@ -83,9 +85,15 @@ function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions)
     %likelihood = 1/sqrt((2*pi).^3 * det(measurementNoise)) * exp(-0.5 * summed);
     %likelihood = 1/sqrt((2*pi) * det(measurementNoise)) * exp(-0.5 * summed);
     
+    if max(summed) == 0 % In case where everything is 0 - should this ever happen?
+        summed(1, 1) = eps;
+        disp('Warning (mlf) - weights from sensors all 0');
+    end
+    
+    
     likelihood = rdivide(summed, sum(summed));
     
-    disp(max(likelihood));
+    %disp(max(likelihood));
     %disp(min(likelihood));
     %disp(likelihood);
     % Return summation
