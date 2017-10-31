@@ -14,8 +14,6 @@ classdef Model
         % sensor positions (x, y)
         sensorPositions
         
-        % Noise parameter
-        noise = 3
         
     end
     
@@ -45,10 +43,8 @@ classdef Model
             
         end
         
-        function [statePred, covPred] = predict(pf, NOISE)
-            [statePred, covPred] = predict(pf, NOISE);
-            
-        end
+        
+        
         
     end
     
