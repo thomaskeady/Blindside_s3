@@ -15,7 +15,7 @@ classdef Model
         % sensor positions (x, y)
         sensorPositions
         
-        % Noise parameter
+        % Noise parameter DONT FORGET TO CHANGE FILENAMES AS CHANGE NOISE
         noise = 3
         
         % RSSI to m conversion coeffs

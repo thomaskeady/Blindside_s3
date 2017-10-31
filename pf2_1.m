@@ -4,6 +4,9 @@ close all
 fclose('all');
 delete(instrfindall) % For open serial ports
 
+% Output file
+outputname = '';
+
 % Declare # of receivers
 NUM_RECEIVERS = 6;
 
@@ -45,6 +48,9 @@ if (LIVE)
 else
     sim_file = 'data/data_outside_10-30-2017_13-57-05-front1_forMat.csv';
     
+    outputname = 'processed_data/outside_10-30-2017_13-57-05-front1_n3.csv';
+    fid = fopen(outputname, 'a+');
+    
     data = csvread(sim_file);
     
     %disp(size(sensorPositions(1,:)));
@@ -77,7 +83,14 @@ else
         [statePred, covPred] = predict(model.pf, model.noise);
         %disp('exited predict');
         
-        mapped = model.RSSI_TO_M_COEFF * exp(model.RSSI_TO_M_EXP * data(s, 3:2+NUM_RECEIVERS));
+        secs = data(s, 1);
+        mins = data(s, 2);
+        raws = data(s, 3:2+NUM_RECEIVERS);
+        x_truth = data(s, 3+NUM_RECEIVERS);
+        y_truth = data(s, 4+NUM_RECEIVERS);
+        
+        %mapped = model.RSSI_TO_M_COEFF * exp(model.RSSI_TO_M_EXP * data(s, 3:2+NUM_RECEIVERS));
+        mapped = model.RSSI_TO_M_COEFF * exp(model.RSSI_TO_M_EXP * raws);
         
         %[stateCorrected, covCorrected] = correct(model.pf, data(s, 3:2+NUM_RECEIVERS), sensorPositions);
         [stateCorrected, covCorrected] = correct(model.pf, mapped, sensorPositions);
@@ -87,13 +100,31 @@ else
         
         %NOW JUST COMPARE ESTIMATED TO TRUTH, OUTPUT IT 
         % Get dist from truth
-        diff = pdist([stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS)], 'euclidean');
+        %diff = pdist([stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS)], 'euclidean');
+        %diff = pdist([stateCorrected, data(s, 3+NUM_RECEIVERS:4+NUM_RECEIVERS)]);
+        %diff = sqrt((stateCorrected(1)-data(s, 3+NUM_RECEIVERS))^2 + (stateCorrected(2)-data(s, 4+NUM_RECEIVERS))^2);
+        diff = sqrt((stateCorrected(1)-y_truth)^2 + (stateCorrected(2)-y_truth)^2);
+        
+        %disp(data(s, 3+NUM_RECEIVERS:4+NUM_RECEIVERS));
+        %disp(stateCorrected);
         
         %angle = atan2(norm(cross(stateCorrected,data(2+NUM_RECEIVERS:3+NUM_RECEIVERS))), dot(stateCorrected,data(2+NUM_RECEIVERS:3+NUM_RECEIVERS)));
-        angle = atan2(y2-y1,x2-x1)
+        %angle = atan2(data(s, 3+NUM_RECEIVERS)-stateCorrected(1), data(s, 4+NUM_RECEIVERS)-stateCorrected(2));
+        angle = atan2(x_truth-stateCorrected(1), y_truth-stateCorrected(2));
         
-        disp(diff);
-        disp(angle);
+        %disp(diff);
+        %disp(angle);
+        %disp(sprintf('%f, %f', diff, angle));
+        
+        rawString = sprintf('%d, ', raws);
+        
+        % secs, mins, raw data, x truth, y truth, x meas, y meas, diff, angle
+        toPrint = sprintf('%f,%f,%s,%d,%d,%d,%d,%f,%f', secs, mins, rawString, x_truth, y_truth, stateCorrected(1), stateCorrected(2), diff, angle);
+        
+        %disp(toPrint);
+        
+        fprintf(fid, '%s', toPrint);
+        fprintf(fid, '\n');
         
         %myPlot.updatePlotSim(model.pf, data(s,1), stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS));
         %disp('updated plot');
