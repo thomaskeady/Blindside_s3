@@ -55,25 +55,42 @@ else
     
     %disp(sensorPositions);
     
-    % Create plot class
-    if (PLOT)
-        myPlot = PlotClass(max(sensorPositions(1,:)), max(sensorPositions(2,:)), ...
-            8, ... % Bound, where put for now?
-            LIVE); % Not live if in this branch, leave for ease of reuse
-        
-    end
+    
     
     
     % Create model (includes particle filter, mapping RSSI-m, etc...
     model = Model(sensorPositions);
     
+    % Create plot class
+    if (PLOT)
+        myPlot = PlotClass(max(sensorPositions(1,:)), max(sensorPositions(2,:)), ...
+            model.bound, ... 
+            LIVE); % Not live if in this branch, leave for ease of reuse
+        
+        
+    end
+    
+    disp('starting loop');
+    
     % Loop over data
-    for s=1:length(data)
-        [statePred, covPred] = predict(pf, model.noise);
+    for s=3:length(data)
+        [statePred, covPred] = predict(model.pf, model.noise);
+        %disp('exited predict');
         
-        [stateCorrected, covCorrected] = correct(pf, data(s, 3:2+NUM_RECEIVERS), sensorPositions);
+        mapped = model.RSSI_TO_M_COEFF * exp(model.RSSI_TO_M_EXP * data(s, 3:2+NUM_RECEIVERS));
         
-        updatePlotSim(obj, particleFilter, t, currentBestGuess, actualPosition)
+        %[stateCorrected, covCorrected] = correct(model.pf, data(s, 3:2+NUM_RECEIVERS), sensorPositions);
+        [stateCorrected, covCorrected] = correct(model.pf, mapped, sensorPositions);
+        %disp('exited correct');
+        
+        disp(stateCorrected);
+        
+        %NOW JUST COMPARE ESTIMATED TO TRUTH, OUTPUT IT 
+        % Get dist from truth
+        diff = pdist([stateCorrected, data(2+NUM_RECEIVER
+        
+        %myPlot.updatePlotSim(model.pf, data(s,1), stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS));
+        %disp('updated plot');
         
     end
     

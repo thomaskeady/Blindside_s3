@@ -75,17 +75,25 @@ else
     % Loop over data
     for s=3:length(data)
         [statePred, covPred] = predict(model.pf, model.noise);
-        disp('exited predict');
+        %disp('exited predict');
         
         mapped = model.RSSI_TO_M_COEFF * exp(model.RSSI_TO_M_EXP * data(s, 3:2+NUM_RECEIVERS));
         
         %[stateCorrected, covCorrected] = correct(model.pf, data(s, 3:2+NUM_RECEIVERS), sensorPositions);
         [stateCorrected, covCorrected] = correct(model.pf, mapped, sensorPositions);
-        disp('exited correct');
+        %disp('exited correct');
         
-        disp(stateCorrected);
+        %disp(stateCorrected);
         
         %NOW JUST COMPARE ESTIMATED TO TRUTH, OUTPUT IT 
+        % Get dist from truth
+        diff = pdist([stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS)], 'euclidean');
+        
+        %angle = atan2(norm(cross(stateCorrected,data(2+NUM_RECEIVERS:3+NUM_RECEIVERS))), dot(stateCorrected,data(2+NUM_RECEIVERS:3+NUM_RECEIVERS)));
+        angle = atan2(y2-y1,x2-x1)
+        
+        disp(diff);
+        disp(angle);
         
         %myPlot.updatePlotSim(model.pf, data(s,1), stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS));
         %disp('updated plot');
