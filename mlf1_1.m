@@ -86,7 +86,7 @@ function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions)
     %likelihood = 1/sqrt((2*pi) * det(measurementNoise)) * exp(-0.5 * summed);
     
     if max(summed) == 0 % In case where everything is 0 - should this ever happen?
-        summed(1, 1) = eps;
+        summed(1, 1) = eps; % PUT THIS CASE INTO IF AND CHECK THERE SO KNOW i
         disp('Warning (mlf) - weights from sensors all 0');
     end
     
