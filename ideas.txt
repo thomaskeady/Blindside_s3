@@ -3,6 +3,9 @@ Ideas:
 STF:
     Add distribution around previous estimate to encourage more particles to be near there
     Pull particles towards previous estimate? Not sure i like that
+
+    https://www.mathworks.com/help/robotics/ref/robotics.resamplingpolicy-class.html
+    ^^^ WHAT IS THIS THING WHY HAVENT SEEN BEFORE?? investigate!!
     
 MLF:
     
