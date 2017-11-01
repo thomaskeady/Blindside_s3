@@ -147,8 +147,15 @@ simulationTime = 0;
 % Plot stuff stolen from ExampleHelperCarBot
 plotFigureHandle = figure('Name', 'Particle Filter');
 % clear the figure
+
+disp('between figure and axes');
+%pause; % Window with no axes (makes sense lol)
+
 ax = axes(plotFigureHandle);
 cla(ax)
+
+disp('between cla and .Position');
+%pause; % Little baby plot with no formatting
 
 % customize the figure
 plotFigureHandle.Position = [100 100 1000 500];
@@ -157,6 +164,9 @@ xlim(ax, [-(bound+1),bound+1]);
 ylim(ax, [-(bound+1),bound+1]);
 grid(ax, 'on');
 box(ax, 'on');         
+
+disp('between box and hold');
+%pause; % plot appears, no box
 
 hold(ax, 'on')
 

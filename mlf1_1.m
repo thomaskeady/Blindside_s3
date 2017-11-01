@@ -49,12 +49,13 @@ function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions)
         % Broken down
         coeff = (1/sqrt(2*pi*stddev^2));
         x_pos = (predictParticles(1, :) ...
-            - sensorPositions(i, 1)).^2;
-    %            - sensorPositions(1, i)).^2;
+            - sensorPositions(1, i)).^2;
+%    - sensorPositions(i, 1)).^2;
+
     
         y_pos = (predictParticles(2, :) ...
-            - sensorPositions(i, 2)).^2;
-    %            - sensorPositions(2, i)).^2;
+            - sensorPositions(2, i)).^2;
+%            - sensorPositions(i, 2)).^2;
 
         radius = dist(i)^2;
         denom = 2*stddev^2;

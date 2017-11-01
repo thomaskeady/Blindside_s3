@@ -48,8 +48,8 @@ if (LIVE)
 else
     sim_file = 'data/data_outside_10-30-2017_13-57-05-front1_forMat.csv';
     
-    outputname = 'processed_data/outside_10-30-2017_13-57-05-front1_n01.csv';
-    fid = fopen(outputname, 'a+');
+    %outputname = 'processed_data/outside_10-30-2017_13-57-05-front1_n01.csv';
+    %fid = fopen(outputname, 'a+');
     
     data = csvread(sim_file);
     
@@ -69,10 +69,13 @@ else
     
     % Create plot class
     if (PLOT)
-        myPlot = PlotClass(max(sensorPositions(1,:)), max(sensorPositions(2,:)), ...
+        %myPlot = PlotClass(max(sensorPositions(1,:)), max(sensorPositions(2,:)), ...
+        %    model.bound, ... 
+        %    LIVE); % Not live if in this branch, leave for ease of reuse
+        myPlot = PlotClass();
+        myPlot.begin(max(sensorPositions(1,:)), max(sensorPositions(2,:)), ...
             model.bound, ... 
             LIVE); % Not live if in this branch, leave for ease of reuse
-        
         
     end
     
@@ -123,11 +126,11 @@ else
         
         %disp(toPrint);
         
-        fprintf(fid, '%s', toPrint);
-        fprintf(fid, '\n');
+        %fprintf(fid, '%s', toPrint);
+        %fprintf(fid, '\n');
         
-        %myPlot.updatePlotSim(model.pf, data(s,1), stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS));
-        %disp('updated plot');
+        myPlot.updatePlotSim(model.pf, data(s,1), stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS));
+        disp('updated plot');
         
     end
     

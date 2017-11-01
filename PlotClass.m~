@@ -32,22 +32,13 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
     methods
         %function obj = PlotClass(x_dist, y_dist, bound, isLive)
         function obj = PlotClass() 
-            
-            % Do nothing?
-            
-            
-        end % Constructor
-        
-        function begin(obj, x_dist, y_dist, bound, isLive)
-            obj.FigureHandle = figure('Name', 'Particle Filter');
+        obj.FigureHandle = figure('Name', 'Particle Filter');
             
             disp('Why no figure here?');
             pause;
             
             obj.ax = axes(obj.FigureHandle);
             cla(obj.ax);
-            
-            disp('between cla and position');
             
             % customize the figure
             obj.FigureHandle.Position = [100 100 1000 500];
@@ -67,16 +58,16 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
             
             if (isLive) 
                 obj.ActualPosition = plot(obj.ax, 0,0,'gs-', 'MarkerSize', 10, 'LineWidth', 1.5); % Actual worker location
-                disp('isLive = true');
             end  % Else leave it uninitialized
             
-            disp('exiting begin');
-        end
+            
+            
+            
+        end % Constructor
         
+        function begin(
         
         function updatePlotSim(obj, particleFilter, t, currentBestGuess, actualPosition)
-            
-            %disp('updatePLot called');
             
             particles = particleFilter.Particles;
             obj.Particles.XData = particles(1:end,1);
@@ -99,10 +90,6 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
 
             obj.ax = get(obj.FigureHandle, 'currentaxes');
             title(obj.ax, ['t = ', num2str(t)]);
-            
-            %disp('end updatePlot');
-            
-            pause(1);
             
         end
         
