@@ -57,17 +57,17 @@ duinos{6} = '/dev/tty.usbserial-DN00CVZK';%
 ports = cell(NUM_RECEIVERS, 1);
 
 % % Do we still have to do this janky first one outside the loop?
-ports{1} = serial(duinos{1}, 'BaudRate', 115200);
-fopen(ports{1});
-set(ports{1}, 'Timeout', 0.1);
-set(ports{1}, 'Timeout', 2);
+%l%ports{1} = serial(duinos{1}, 'BaudRate', 115200);
+%l%fopen(ports{1});
+%l%set(ports{1}, 'Timeout', 0.1);
+%l%set(ports{1}, 'Timeout', 2);
 
 for i = START_RECEIVER:NUM_RECEIVERS
     %disp(duinos{i});
     %disp('next');
-    ports{i} = serial(duinos{i},'BaudRate',115200);
-    fopen(ports{i});
-    set(ports{i}, 'Timeout', 2);
+    %l%ports{i} = serial(duinos{i},'BaudRate',115200);
+    %l%fopen(ports{i});
+    %l%set(ports{i}, 'Timeout', 2);
     
 end
 
@@ -91,9 +91,9 @@ trash = 0;
 for t = 1:5 % Clearing startup glitches
     for i = 1:NUM_RECEIVERS
         
-        fwrite(ports{i}, 'A');
+        %l%fwrite(ports{i}, 'A');
         %trash = fscanf(ports{i}, '%d');
-        readings{i} = fscanf(ports{i}, '%d');
+        %l%readings{i} = fscanf(ports{i}, '%d');
         
     end
 end
@@ -201,15 +201,15 @@ while simulationTime < 50 % if time is not up
     
     for i = 1:NUM_RECEIVERS
         
-        fwrite(ports{i}, 'A');
-        readings{i} = fscanf(ports{i}, '%d');
-        disp( readings{i});
-        readings{i} = RSSI_TO_M_COEFF * exp(RSSI_TO_M_EXP * readings{i});
+        %l%fwrite(ports{i}, 'A');
+        %l%readings{i} = fscanf(ports{i}, '%d');
+        %l%disp( readings{i});
+        %l%readings{i} = RSSI_TO_M_COEFF * exp(RSSI_TO_M_EXP * readings{i});
         
         
     end    
     
-    measurement = cell2mat(readings);
+    %l%measurement = cell2mat(readings);
     
     fprintf(fid, '%f,%f,%f,%f,%f,%f,', measurement);
     fprintf(fid, '\n');
