@@ -1,6 +1,6 @@
 % D is [secs, mins, raw data... raw data, state est 1... state est n]
 %function [avgDist, avgAng, stddevDist, stddevAng, D] = doPF(dataFile, aggFname, directory, params)
-function [avgDist, avgAng, stddevDist, stddevAng, D] = pf2_1(simFile, gsd, wbd, psf, np, rsm)
+function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(simFile, plot, gsd, wbd, psf, np, rsm)
 
     % Generic stuff
     clear all
@@ -30,7 +30,7 @@ function [avgDist, avgAng, stddevDist, stddevAng, D] = pf2_1(simFile, gsd, wbd, 
     sensorPositions = zeros(2, NUM_RECEIVERS);
 
     % Plot or no plot?
-    PLOT = true;
+    PLOT = plot;
     myPlot = [];
 
     % Live or simulated?
@@ -86,6 +86,14 @@ function [avgDist, avgAng, stddevDist, stddevAng, D] = pf2_1(simFile, gsd, wbd, 
 
         disp('starting loop');
 
+        distMeanList = []; % Can predetermine size for improved speed
+        angleMeanList = [];
+        distMaxList = [];
+        angleMaxList = [];
+        D = [];
+        
+        
+        
         % Loop over data
         for s=3:length(data)
             [statePred, covPred] = predict(model.pf, model.noise);
@@ -120,28 +128,47 @@ function [avgDist, avgAng, stddevDist, stddevAng, D] = pf2_1(simFile, gsd, wbd, 
             %angle = atan2(data(s, 3+NUM_RECEIVERS)-stateCorrected(1), data(s, 4+NUM_RECEIVERS)-stateCorrected(2));
             angle = atan2(x_truth-stateCorrected(1), y_truth-stateCorrected(2));
 
+            D = [D, [stateCorrected, covCorrected]];
+            distMeanList = [distMeanList, diff];
+            angleMeanList = [angleMeanList, angle];
+            
+            notNeeded, idx = max(model.pf.Weights);
+            diffMax = sqrt((model.pf.Particles(idx,2)-y_truth)^2 + (model.pf.Particles(idx,1)-y_truth)^2);
+            angleMax = atan2(x_truth-model.pf.Particles(idx,1), y_truth-model.pf.Particles(idx,2));
+            
+            distMaxList = [distMaxList, diffMax];
+            angleMaxList = [angleMaxList, angleMax];
+            
             %disp(diff);
             %disp(angle);
             %disp(sprintf('%f, %f', diff, angle));
 
-            rawString = sprintf('%d, ', raws);
+            %rawString = sprintf('%d, ', raws);
 
             % secs, mins, raw data, x truth, y truth, x meas, y meas, diff, angle
-            toPrint = sprintf('%f,%f,%s,%d,%d,%d,%d,%f,%f', secs, mins, rawString, x_truth, y_truth, stateCorrected(1), stateCorrected(2), diff, angle);
+            %toPrint = sprintf('%f,%f,%s,%d,%d,%d,%d,%f,%f', secs, mins, rawString, x_truth, y_truth, stateCorrected(1), stateCorrected(2), diff, angle);
 
             %disp(toPrint);
 
             %fprintf(fid, '%s', toPrint);
             %fprintf(fid, '\n');
 
-            %myPlot.updatePlotSim(model.pf, data(s,1), stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS));
-            myPlot.updatePlotSim(model.pf, data(s,1), mapped, sensorPositions, stateCorrected, [x_truth, y_truth]);
-            disp('updated plot');
+            if (PLOT)
+                %myPlot.updatePlotSim(model.pf, data(s,1), stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS));
+                myPlot.updatePlotSim(model.pf, data(s,1), mapped, sensorPositions, stateCorrected, [x_truth, y_truth]);
+                disp('updated plot');
+            end
 
         end
 
-
-
+        avgDistMean = mean(distMeanList);
+        avgAngMean = mean(angleMeanList);
+        stddevDistMean = std2(distMeanList); 
+        stddevAngMean = std2(angleMeanList);
+        avgDistMax = mean(distMaxList);
+        avgAngMax = mean(angleMaxList);
+        stddevDistMax = std2(distMaxList); 
+        stddevAngMax = std2(angleMaxList);
 
 
     end

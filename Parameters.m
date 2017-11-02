@@ -88,12 +88,12 @@ classdef Parameters
                                 tfid = fopen(thisFilename, 'w');
 
                                 % D is big data matrix
-                                [avgDist, avgAng, stddevDist, stddevAng, D] = pf2_1(obj.simFile, gsd, wbd, psf, np, rsm);
+                                [avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(obj.simFile, gsd, wbd, psf, np, rsm);
 
                                 csvwrite(tfid, D);
 
-                                fprintf(afid, '%d,%d,%d,%d,%s,%d,%d,%d,%d', bsd, wbd, psf, np, rsm, ...
-                                    avgDist, avgAng, stddevDist, stddevAng);
+                                fprintf(afid, '%d,%d,%d,%d,%s,%d,%d,%d,%d,%d,%d,%d,%d', bsd, wbd, psf, np, rsm, ...
+                                    avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax);
                                 fprintf(afid, '\n');
                             
                             
