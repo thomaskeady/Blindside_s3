@@ -10,7 +10,7 @@ classdef Model
         NUM_PARTICLES = 1000
         
         % Boundaries of the system, square with edge 2*bound
-        bound = 8
+        bound = 10
         
         % sensor positions (x, y)
         sensorPositions
