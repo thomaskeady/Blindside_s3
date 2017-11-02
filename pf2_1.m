@@ -1,6 +1,6 @@
 % D is [secs, mins, raw data... raw data, state est 1... state est n]
 %function [avgDist, avgAng, stddevDist, stddevAng, D] = doPF(dataFile, aggFname, directory, params)
-function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(simFile, makePlot, gsd, wbd, psf, np, sem, rsm)
+function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(simFile, makePlot, gsd_, wbd, psf_, np_, sem, rsm_)
 
     % Generic stuff
     %clear all % Not when inside a function with parameters crazy!!
@@ -70,7 +70,9 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
 
 
         % Create model (includes particle filter, mapping RSSI-m, etc...
-        model = Model(sensorPositions, gsd, np, psf, rsm);
+        model = Model(sensorPositions, gsd_, np_, psf_, rsm_);
+        %model = Model();
+        %model.begin(sensorPositions, gsd_, np_, psf_, rsm_);
 
         % Create plot class
         if (PLOT)
