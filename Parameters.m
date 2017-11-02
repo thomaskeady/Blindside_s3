@@ -60,6 +60,7 @@ classdef Parameters
             
         end
         
+        % Each param is an array of values to sweep over
         function beginSweep(gsdR, wbdR, psfR, npR)
             
             afid = fopen(obj.aggFname, 'a+');
@@ -81,10 +82,12 @@ classdef Parameters
                             
                             thisFilename = sprintf('%s/gsd%d_wbd%d_psf%d_npR%d.csv', ...
                                 obj.directory, makeInt(gsd), makeInt(wbd), makeInt(psf), makeInt(np));
-                            tfid = fopen(thisFilename, 'a+');
+                            tfid = fopen(thisFilename, 'w');
                             
                             % D is big data matrix
-                            [avgDist, avgAng, stddevDist, stddevAng, D] = doPF(simFile, gsd, wbd, psf, np);
+                            [avgDist, avgAng, stddevDist, stddevAng, D] = doPF(obj.simFile, gsd, wbd, psf, np);
+                            
+                            csvwrite(tfid, D);
                             
                             fprintf(afid, '%d,%d,%d,%d,%d,%d,%d,%d', bsd, wbd, psf, np, ...
                                 avgDist, avgAng, stddevDist, stddevAng);
