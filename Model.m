@@ -15,7 +15,7 @@ classdef Model < handle
         % sensor positions (x, y)
         sensorPositions
         
-        % Noise parameter DONT FORGET TO CHANGE FILENAMES AS CHANGE NOISE
+        % Noise parameter 
         noise = 0.1
         
         % State estimation method

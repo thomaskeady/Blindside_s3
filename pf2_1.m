@@ -2,8 +2,7 @@
 %function [avgDist, avgAng, stddevDist, stddevAng, D] = doPF(dataFile, aggFname, directory, params)
 function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(simFile, makePlot, gsd_, wbd, psf_, np_, sem, rsm_)
 
-    % Generic stuff
-    %clear all % Not when inside a function with parameters crazy!!
+    %clear all 
     %close all
     %fclose('all');
     delete(instrfindall) % For open serial ports
@@ -13,19 +12,6 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
 
     % Declare # of receivers
     NUM_RECEIVERS = 6;
-
-    % Declare beacon positions (should these numbers be stored in another
-    % file?? % YES THEY SHOULD BE load them with the rest of the data
-    % sideDist = 1.52; % m, 2x this distance is length of vehicle
-    % halfwidth = 1.22; %m, 2x this is width of vehicle
-    % 
-    % sensorPositions = [
-    %     -halfwidth, -sideDist;
-    %     -halfwidth, 0;
-    %     -halfwidth, sideDist;
-    %     halfwidth, sideDist;
-    %     halfwidth, 0;
-    %     halfwidth, -sideDist];
 
     sensorPositions = zeros(2, NUM_RECEIVERS);
 
@@ -50,11 +36,7 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
         %   Create file to log to (inside file handling class!!)
 
     else
-        %sim_file = 'data/data_outside_10-30-2017_13-48-09-side1_forMat.csv';
         sim_file = simFile;
-
-        %outputname = 'processed_data/outside_10-30-2017_13-57-05-front1_n01.csv';
-        %fid = fopen(outputname, 'a+');
 
         data = csvread(sim_file);
 
@@ -66,9 +48,6 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
 
         %disp(sensorPositions);
 
-
-
-
         % Create model (includes particle filter, mapping RSSI-m, etc...
         model = Model(sensorPositions, gsd_, np_, psf_, rsm_);
         %model = Model();
@@ -76,9 +55,6 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
 
         % Create plot class
         if (PLOT)
-            %myPlot = PlotClass(max(sensorPositions(1,:)), max(sensorPositions(2,:)), ...
-            %    model.bound, ... 
-            %    LIVE); % Not live if in this branch, leave for ease of reuse
             myPlot = PlotClass();
             myPlot.begin(max(sensorPositions(1,:)), max(sensorPositions(2,:)), ...
                 sensorPositions, model.bound, ... 
@@ -93,7 +69,6 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
         distMaxList = [];
         angleMaxList = [];
         D = [];
-        
         
         
         % Loop over data
@@ -116,18 +91,12 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
 
             %disp(stateCorrected);
 
-            %NOW JUST COMPARE ESTIMATED TO TRUTH, OUTPUT IT 
             % Get dist from truth
-            %diff = pdist([stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS)], 'euclidean');
-            %diff = pdist([stateCorrected, data(s, 3+NUM_RECEIVERS:4+NUM_RECEIVERS)]);
-            %diff = sqrt((stateCorrected(1)-data(s, 3+NUM_RECEIVERS))^2 + (stateCorrected(2)-data(s, 4+NUM_RECEIVERS))^2);
             diff = sqrt((stateCorrected(1)-y_truth)^2 + (stateCorrected(2)-y_truth)^2);
 
             %disp(data(s, 3+NUM_RECEIVERS:4+NUM_RECEIVERS));
             %disp(stateCorrected);
 
-            %angle = atan2(norm(cross(stateCorrected,data(2+NUM_RECEIVERS:3+NUM_RECEIVERS))), dot(stateCorrected,data(2+NUM_RECEIVERS:3+NUM_RECEIVERS)));
-            %angle = atan2(data(s, 3+NUM_RECEIVERS)-stateCorrected(1), data(s, 4+NUM_RECEIVERS)-stateCorrected(2));
             angle = atan2(x_truth-stateCorrected(1), y_truth-stateCorrected(2));
 
             D = [D, [stateCorrected, covCorrected]];
