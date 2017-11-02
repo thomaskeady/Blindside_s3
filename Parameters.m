@@ -61,7 +61,7 @@ classdef Parameters
         end
         
         % Each param is an array of values to sweep over
-        function beginSweep(gsdR, wbdR, psfR, npR)
+        function beginSweep(gsdR, wbdR, psfR, npR, rsmR)
             
             afid = fopen(obj.aggFname, 'a+');
             
@@ -80,21 +80,24 @@ classdef Parameters
                         for l = 1:numel(npR)
                             np = npR(l);
                             
-                            thisFilename = sprintf('%s/gsd%d_wbd%d_psf%d_npR%d.csv', ...
-                                obj.directory, makeInt(gsd), makeInt(wbd), makeInt(psf), makeInt(np));
-                            tfid = fopen(thisFilename, 'w');
+                            for m = 1:numel(rsmR)
+                                rsm = rsmR(m);
                             
-                            % D is big data matrix
-                            [avgDist, avgAng, stddevDist, stddevAng, D] = doPF(obj.simFile, gsd, wbd, psf, np);
+                                thisFilename = sprintf('%s/gsd%d_wbd%d_psf%d_npR%d_rsm%s.csv', ...
+                                    obj.directory, makeInt(gsd), makeInt(wbd), makeInt(psf), makeInt(np), rsm);
+                                tfid = fopen(thisFilename, 'w');
+
+                                % D is big data matrix
+                                [avgDist, avgAng, stddevDist, stddevAng, D] = pf2_1(obj.simFile, gsd, wbd, psf, np, rsm);
+
+                                csvwrite(tfid, D);
+
+                                fprintf(afid, '%d,%d,%d,%d,%s,%d,%d,%d,%d', bsd, wbd, psf, np, rsm, ...
+                                    avgDist, avgAng, stddevDist, stddevAng);
+                                fprintf(afid, '\n');
                             
-                            csvwrite(tfid, D);
                             
-                            fprintf(afid, '%d,%d,%d,%d,%d,%d,%d,%d', bsd, wbd, psf, np, ...
-                                avgDist, avgAng, stddevDist, stddevAng);
-                            fprintf(afid, '\n');
-                            
-                            
-                            
+                            end
                         end
                     end
                 end

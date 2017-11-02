@@ -1,6 +1,6 @@
 % D is [secs, mins, raw data... raw data, state est 1... state est n]
 %function [avgDist, avgAng, stddevDist, stddevAng, D] = doPF(dataFile, aggFname, directory, params)
-function [avgDist, avgAng, stddevDist, stddevAng, D] = doPF(simFile, gsd, wbd, psf, np)
+function [avgDist, avgAng, stddevDist, stddevAng, D] = pf2_1(simFile, gsd, wbd, psf, np, rsm)
 
     % Generic stuff
     clear all
@@ -70,7 +70,7 @@ function [avgDist, avgAng, stddevDist, stddevAng, D] = doPF(simFile, gsd, wbd, p
 
 
         % Create model (includes particle filter, mapping RSSI-m, etc...
-        model = Model(sensorPositions);
+        model = Model(sensorPositions, np, psf, sem, rsm, gsd);
 
         % Create plot class
         if (PLOT)

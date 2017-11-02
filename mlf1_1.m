@@ -7,7 +7,7 @@
 % SLow down time because this person isnt moving that fast
 % Plot particle heights as a Z? for visualization
 
-function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions)
+function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions, gsd)
     
     % First map measurements to most-likely radius from each sensor
     % Get from Andrew
@@ -23,7 +23,8 @@ function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions)
     
     % Then make distribution around each sensor (relative to origin!)
     %mean = radius from above
-    stddev = 0.7; % meter
+    %stddev = 0.7; % meter
+    stddev = gsd;
     scale = 1;  % scaling factor
     
     numParticles = length(predictParticles);

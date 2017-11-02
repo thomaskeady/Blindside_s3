@@ -19,13 +19,7 @@ classdef Model
         noise = 0.1
         
         % State estimation method
-        sem = 'mean' % or 'maxweight'
-        
-        % Resampling mehtod 'multinomial' or 'systematic'
-        rsm = 'systematic'
-        
-        % Gaussian stddev in mlf
-        gsd
+        sem = 'maxweight'
         
         % RSSI to m conversion coeffs
         RSSI_TO_M_COEFF = 0.00482998
@@ -40,16 +34,14 @@ classdef Model
     
     methods
         
-        function obj = Model(sensorPositions, gsd, numParticles, psf, sem, rsm)
+        function obj = Model(sensorPositions, numParticles, psf, sem)
             %pf = robotics.ParticleFilter; % Do stuff like this in the
             %properties
             obj.pf = robotics.ParticleFilter;
             
-            obj.gsd = gsd;
             obj.NUM_PARTICLES = numParticles;
             obj.noise = psf;
             obj.sem = sem;
-            obj.rsm = rsm;
             
             stateBounds = [
                 -obj.bound, obj.bound;
@@ -57,7 +49,7 @@ classdef Model
             initialize(obj.pf, obj.NUM_PARTICLES, stateBounds);
             
             obj.pf.StateEstimationMethod = obj.sem; % is this allowed in the properties?
-            obj.pf.ResamplingMethod = obj.rsm; 
+            obj.pf.ResamplingMethod = 'systematic'; 
             
             obj.pf.StateTransitionFcn = @stf1_1;
             obj.pf.MeasurementLikelihoodFcn = @mlf1_1;
@@ -69,7 +61,7 @@ classdef Model
         end
         
         function [stateCorrected, covCorrected] = correct(pf, measurement, sensorPositions)
-            [stateCorrected, covCorrected] = correct(pf, measurement, sensorPositions, obj.gsd);
+            [stateCorrected, covCorrected] = correct(pf, measurement, sensorPositions);
             
             
         end
