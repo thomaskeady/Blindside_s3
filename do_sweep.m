@@ -12,7 +12,8 @@ psfR = [0.1, 1];
 
 npR  = [500, 1000];
 
-rsmR = ["multinomial", "systematic", "stratified", "residual"];
+%rsmR = ["multinomial", "systematic", "stratified", "residual"];
+rsmR = ["multinomial"];
 
 myParams.beginSweep(gsdR, wbdR, psfR, npR, rsmR);
 

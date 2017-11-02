@@ -69,6 +69,8 @@ classdef Parameters
             
             afid = fopen(obj.aggFname, 'a+');
             
+            fprintf(afid, "Gaussian stddev, weight by dist, Particle scatter factor, numParticles, resampling method, avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax");
+            fprintf(afid, '\n');
             
             tic
             
@@ -108,19 +110,20 @@ classdef Parameters
                                 
                                 disp(thisFilename);
                                 
-                                tfid = fopen(thisFilename, 'w');
+                                %tfid = fopen(thisFilename, 'w');
                                 
                                 % D is big data matrix
-                                [avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(obj.simFile, true, gsd, wbd, psf, np, rsm);
+                                [avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(obj.simFile, false, gsd, wbd, psf, np, rsm);
 
                                 %csvwrite(tfid, D);
-                                csvwrite(thisFilename, D);
+                                %csvwrite(thisFilename, D);
+                                xlswrite(thisFilename, D);
 
                                 fprintf(afid, '%d,%d,%d,%d,%s,%d,%d,%d,%d,%d,%d,%d,%d', gsd, wbd, psf, np, rsm, ...
                                     avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax);
                                 fprintf(afid, '\n');
                             
-                                fclose(thisFilename);
+                                %fclose(tfid);
                             
                             end
                         end

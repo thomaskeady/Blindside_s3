@@ -72,7 +72,7 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
         D = zeros(length(data), 8);
         %disp(size(D));
         %disp(size(D(1, :)));
-        stateCorrected(1), stateCorrected(2), covCorrected(1,1), covCorrected(1,2), covCorrected(2,1), covCorrected(2,2), model.pf.Particles(idx,1), model.pf.Particles(idx,2)];
+        %stateCorrected(1), stateCorrected(2), covCorrected(1,1), covCorrected(1,2), covCorrected(2,1), covCorrected(2,2), model.pf.Particles(idx,1), model.pf.Particles(idx,2)];
         D(1,:) = ["x_mean", "y_mean", "cov11", "cov12", "cov21", "cov22", "x_max", "y_max"];
         
         % Loop over data
@@ -138,11 +138,11 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
             %fprintf(fid, '%s', toPrint);
             %fprintf(fid, '\n');
 
-%             if (PLOT)
-%                 %myPlot.updatePlotSim(model.pf, data(s,1), stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS));
-%                 myPlot.updatePlotSim(model.pf, data(s,1), mapped, sensorPositions, stateCorrected, [x_truth, y_truth]);
-%                 disp('updated plot');
-%             end
+            if (PLOT)
+                %myPlot.updatePlotSim(model.pf, data(s,1), stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS));
+                myPlot.updatePlotSim(model.pf, data(s,1), mapped, sensorPositions, stateCorrected, [x_truth, y_truth]);
+                disp('updated plot');
+            end
 
         end
 
