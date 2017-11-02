@@ -46,7 +46,7 @@ if (LIVE)
     %   Create file to log to (inside file handling class!!)
 
 else
-    sim_file = 'data/data_outside_10-30-2017_13-57-05-front1_forMat.csv';
+    sim_file = 'data/data_outside_10-30-2017_13-48-09-side1_forMat.csv';
     
     %outputname = 'processed_data/outside_10-30-2017_13-57-05-front1_n01.csv';
     %fid = fopen(outputname, 'a+');
