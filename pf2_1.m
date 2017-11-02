@@ -50,9 +50,7 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
         %disp(sensorPositions);
 
         % Create model (includes particle filter, mapping RSSI-m, etc...
-        model = Model(sensorPositions, gsd_, np_, psf_, rsm_);
-        %model = Model();
-        %model.begin(sensorPositions, gsd_, np_, psf_, rsm_);
+        model = Model(sensorPositions, gsd, np, psf, rsm);
 
         % Create plot class
         if (PLOT)

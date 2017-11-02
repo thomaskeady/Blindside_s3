@@ -1,4 +1,4 @@
-classdef Model < handle
+classdef Model
 % Holds all the tuable parameters of the particle filter
     
     properties(SetAccess = public)
@@ -40,53 +40,16 @@ classdef Model < handle
     
     methods
         
-%         function obj = Model(sensorPositions, gsd, numParticles, psf, rsm)
-        %function obj = Model()
-%             %pf = robotics.ParticleFilter; % Do stuff like this in the
-%             %properties
-%             obj.pf = robotics.ParticleFilter;
-%             
-%             obj.gsd = gsd;
-%             obj.NUM_PARTICLES = numParticles;
-%             obj.noise = psf;
-%             %obj.sem = sem;
-%             obj.rsm = rsm;
-%             
-%             stateBounds = [
-%                 -obj.bound, obj.bound;
-%                 -obj.bound, obj.bound];
-%             initialize(obj.pf, obj.NUM_PARTICLES, stateBounds);
-%             
-%             obj.pf.StateEstimationMethod = 'mean'; % is this allowed in the properties?
-%             obj.pf.ResamplingMethod = obj.rsm; 
-%             
-%             obj.pf.StateTransitionFcn = @stf1_1;
-%             obj.pf.MeasurementLikelihoodFcn = @mlf1_1;
-%             
-%             obj.sensorPositions = sensorPositions;
-            
-            % Do nothing?
-
-        %end
-        
-        %function begin(obj, array)
-        %function begin(obj, sensorPosition, gsd, numParticles, psf, rsm)
-        function obj = Model(sensorPosition_, gsd_, numParticles_, psf_, rsm_)
-        
-             %[sensorPosition, gsd, numParticles, psf, rsm] = array;
-%             sensorPosition = array(0);
-%             gsd = array(1);
-%             numParticles = array(2);
-%             psf = array(3);
-%             rsm = array(4); 
-            
+        function obj = Model(sensorPositions, gsd, numParticles, psf, rsm)
+            %pf = robotics.ParticleFilter; % Do stuff like this in the
+            %properties
             obj.pf = robotics.ParticleFilter;
             
-            obj.gsd = gsd_;
-            obj.NUM_PARTICLES = numParticles_;
-            obj.noise = psf_;
+            obj.gsd = gsd;
+            obj.NUM_PARTICLES = numParticles;
+            obj.noise = psf;
             %obj.sem = sem;
-            obj.rsm = rsm_;
+            obj.rsm = rsm;
             
             stateBounds = [
                 -obj.bound, obj.bound;
@@ -99,7 +62,10 @@ classdef Model < handle
             obj.pf.StateTransitionFcn = @stf1_1;
             obj.pf.MeasurementLikelihoodFcn = @mlf1_1;
             
-            obj.sensorPositions = sensorPosition_;
+            obj.sensorPositions = sensorPositions;
+            
+            
+            
         end
         
         function [stateCorrected, covCorrected] = correct(pf, measurement, sensorPositions)
