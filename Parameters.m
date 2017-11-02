@@ -117,7 +117,7 @@ classdef Parameters
 
                                 %csvwrite(tfid, D);
                                 %csvwrite(thisFilename, D);
-                                xlswrite(thisFilename, D);
+                                xlswrite(thisFilename, D); % shoudl work on Andrew's computer
 
                                 fprintf(afid, '%d,%d,%d,%d,%s,%d,%d,%d,%d,%d,%d,%d,%d', gsd, wbd, psf, np, rsm, ...
                                     avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax);
