@@ -20,8 +20,6 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
     PLOT = makePlot;
     myPlot = [];
 
-    %notNeeded =  0; %holds val of max particle later
-    
     % Live or simulated?
     LIVE = false;
 
@@ -69,9 +67,8 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
         angleMeanList = [];
         distMaxList = [];
         angleMaxList = [];
-        D = zeros(length(data), 8);
-        %disp(size(D));
-        %disp(size(D(1, :)));
+        D = zeros(length(data), 4);
+        
         
         % Loop over data
         for s=3:length(data)
@@ -105,8 +102,8 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
 
             %disp(covCorrected); % Its 2x2
             %disp(size(covCorrected));
-            
-            [notNeeded, idx] = max(model.pf.Weights);
+                        
+            notNeeded, idx = max(model.pf.Weights);
             diffMax = sqrt((model.pf.Particles(idx,2)-y_truth)^2 + (model.pf.Particles(idx,1)-y_truth)^2);
             angleMax = atan2(x_truth-model.pf.Particles(idx,1), y_truth-model.pf.Particles(idx,2));
             
@@ -114,10 +111,7 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
             angleMaxList = [angleMaxList, angleMax];
             
             %D = [D [stateCorrected, covCorrected]];
-            %disp(size(D(s)));
-            %disp(size([stateCorrected(1), stateCorrected(2), covCorrected(1,1), covCorrected(1,2), covCorrected(2,1), covCorrected(2,2), model.pf.Particles(idx,1), model.pf.Particles(idx,2)]));
-            
-            D(s,:) = [stateCorrected(1), stateCorrected(2), covCorrected(1,1), covCorrected(1,2), covCorrected(2,1), covCorrected(2,2), model.pf.Particles(idx,1), model.pf.Particles(idx,2)];
+            D(s) = [stateCorrected(1), stateCorrected(2), covCorrected(1,1), covCorrected(1,2), covCorrected(2,1), covCorrected(2,2), model.pf.Particles(idx,1), model.pf.Particles(idx,2)
             distMeanList = [distMeanList, diff];
             angleMeanList = [angleMeanList, angle];
 
@@ -136,11 +130,11 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
             %fprintf(fid, '%s', toPrint);
             %fprintf(fid, '\n');
 
-%             if (PLOT)
-%                 %myPlot.updatePlotSim(model.pf, data(s,1), stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS));
-%                 myPlot.updatePlotSim(model.pf, data(s,1), mapped, sensorPositions, stateCorrected, [x_truth, y_truth]);
-%                 disp('updated plot');
-%             end
+            if (PLOT)
+                %myPlot.updatePlotSim(model.pf, data(s,1), stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS));
+                myPlot.updatePlotSim(model.pf, data(s,1), mapped, sensorPositions, stateCorrected, [x_truth, y_truth]);
+                disp('updated plot');
+            end
 
         end
 

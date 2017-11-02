@@ -32,8 +32,7 @@ function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions,
     scale = 1;  % scaling factor
     
     numParticles = length(predictParticles);
-    %numSensors = length(measurement) -1; % AFTER EMBEDDING
-    numSensors = length(dist);
+    numSensors = length(measurement);
     
 %     disp(size(measurement));
 %     disp(size(sensorPositions));
@@ -52,16 +51,15 @@ function likelihood = mlf1_1(pf, predictParticles, measurement, sensorPositions,
     
     for i = 1:numSensors
         
-        %disp(i);
-        
         % Broken down
         coeff = (1/sqrt(2*pi*stddev^2));
         x_pos = (predictParticles(1, :) - sensorPositions(1, i)).^2;
-        %x_pos = (predictParticles(1, :) - sensorPositions(i, 1)).^2;
+%    - sensorPositions(i, 1)).^2;
 
     
-        y_pos = (predictParticles(2, :) - sensorPositions(2, i)).^2;
-        %y_pos = (predictParticles(2, :) - sensorPositions(i, 2)).^2;
+        y_pos = (predictParticles(2, :) ...
+            - sensorPositions(2, i)).^2;
+%            - sensorPositions(i, 2)).^2;
 
         radius = dist(i)^2;
         denom = 2*stddev^2;

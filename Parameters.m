@@ -50,8 +50,12 @@ classdef Parameters
             timeNow = datestr(now,'mm-dd-yyyy_HH-MM-SS');
         
             newFolder = sprintf('processed_data/sweep_%s', timeNow);
-            mkdir newFolder
+            [stat, msg, msgID] = mkdir(newFolder);
 
+            disp(stat);
+            disp(msg);
+            disp(msgID);
+            
             obj.aggFname = sprintf('processed_data/sweep_%s_agg.csv', timeNow);
             obj.directory = newFolder;
             %obj.aggFid = fopen(aggFname, 'a+');
@@ -71,18 +75,33 @@ classdef Parameters
             for i = 1:numel(gsdR)
                 gsd = gsdR(i);
                 
+                disp('gsd: ');
+                disp(gsd);
+                
                 for j = 1:numel(wbdR)
                     wbd = wbdR(j);
+                    
+                    disp('wbd: ');
+                    disp(wbd);
                     
                     for k = 1:numel(psfR)
                         psf = psfR(k);
                         
+                        disp('psf: ');
+                        disp(psf);
+                        
                         for l = 1:numel(npR)
                             np = npR(l);
+                            
+                            disp('np: ');
+                            disp(np);
                             
                             for m = 1:numel(rsmR)
                                 rsm = rsmR(m);
                             
+                                disp('rsm: ');
+                                disp(rsm);
+                                
                                 thisFilename = sprintf('%s/gsd%d_wbd%d_psf%d_npR%d_rsm%s.csv', ...
                                     obj.directory, makeInt(gsd), makeInt(wbd), makeInt(psf), makeInt(np), rsm);
                                 tfid = fopen(thisFilename, 'w');
@@ -90,9 +109,10 @@ classdef Parameters
                                 % D is big data matrix
                                 [avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(obj.simFile, true, gsd, wbd, psf, np, rsm);
 
-                                csvwrite(tfid, D);
+                                %csvwrite(tfid, D);
+                                csvwrite(thisFilename, D);
 
-                                fprintf(afid, '%d,%d,%d,%d,%s,%d,%d,%d,%d,%d,%d,%d,%d', bsd, wbd, psf, np, rsm, ...
+                                fprintf(afid, '%d,%d,%d,%d,%s,%d,%d,%d,%d,%d,%d,%d,%d', gsd, wbd, psf, np, rsm, ...
                                     avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax);
                                 fprintf(afid, '\n');
                             

@@ -45,7 +45,7 @@ classdef Model
             %properties
             obj.pf = robotics.ParticleFilter;
             
-            obj.gsd = gsd;
+            obj.gsd = gsd; % Now embedded as part of measurement array
             obj.NUM_PARTICLES = numParticles;
             obj.noise = psf;
             %obj.sem = sem;
@@ -68,8 +68,11 @@ classdef Model
             
         end
         
+        %function [stateCorrected, covCorrected] = correct(pf, measurement, sensorPositions, gsd)
         function [stateCorrected, covCorrected] = correct(pf, measurement, sensorPositions)
-            [stateCorrected, covCorrected] = correct(pf, measurement, sensorPositions, obj.gsd);
+            %[stateCorrected, covCorrected] = correct(pf, measurement, sensorPositions, obj.gsd);
+            %[stateCorrected, covCorrected] = correct(pf, measurement, sensorPositions, gsd);
+            [stateCorrected, covCorrected] = correct(pf, measurement, sensorPositions);
             
             
         end
