@@ -40,7 +40,7 @@ classdef Model
     
     methods
         
-        function obj = Model(sensorPositions, gsd, numParticles, psf, sem, rsm)
+        function obj = Model(sensorPositions, gsd, numParticles, psf, rsm)
             %pf = robotics.ParticleFilter; % Do stuff like this in the
             %properties
             obj.pf = robotics.ParticleFilter;
@@ -48,7 +48,7 @@ classdef Model
             obj.gsd = gsd;
             obj.NUM_PARTICLES = numParticles;
             obj.noise = psf;
-            obj.sem = sem;
+            %obj.sem = sem;
             obj.rsm = rsm;
             
             stateBounds = [
@@ -56,7 +56,7 @@ classdef Model
                 -obj.bound, obj.bound];
             initialize(obj.pf, obj.NUM_PARTICLES, stateBounds);
             
-            obj.pf.StateEstimationMethod = obj.sem; % is this allowed in the properties?
+            obj.pf.StateEstimationMethod = 'mean'; % is this allowed in the properties?
             obj.pf.ResamplingMethod = obj.rsm; 
             
             obj.pf.StateTransitionFcn = @stf1_1;

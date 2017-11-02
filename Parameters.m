@@ -61,7 +61,7 @@ classdef Parameters
         end
         
         % Each param is an array of values to sweep over
-        function beginSweep(gsdR, wbdR, psfR, npR, rsmR)
+        function beginSweep(obj, gsdR, wbdR, psfR, npR, rsmR)
             
             afid = fopen(obj.aggFname, 'a+');
             
@@ -88,7 +88,7 @@ classdef Parameters
                                 tfid = fopen(thisFilename, 'w');
 
                                 % D is big data matrix
-                                [avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(obj.simFile, gsd, wbd, psf, np, rsm);
+                                [avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(obj.simFile, true, gsd, wbd, psf, np, rsm);
 
                                 csvwrite(tfid, D);
 
@@ -96,6 +96,7 @@ classdef Parameters
                                     avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax);
                                 fprintf(afid, '\n');
                             
+                                disp(thisFilename);
                             
                             end
                         end
@@ -109,12 +110,12 @@ classdef Parameters
             
         end
         
-        function toReturn = makeInt(notInt)
-            while (0 ~= notInt - floor(notInt))
-                notInt = notInt * 10;
-            end
-            toReturn = notInt;
-        end
+%         function toReturn = makeInt(notInt)
+%             while (0 ~= notInt - floor(notInt))
+%                 notInt = notInt * 10;
+%             end
+%             toReturn = notInt;
+%         end
         
     end
     

@@ -1,11 +1,11 @@
 % D is [secs, mins, raw data... raw data, state est 1... state est n]
 %function [avgDist, avgAng, stddevDist, stddevAng, D] = doPF(dataFile, aggFname, directory, params)
-function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(simFile, plot, gsd, wbd, psf, np, rsm)
+function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(simFile, makePlot, gsd, wbd, psf, np, sem, rsm)
 
     % Generic stuff
-    clear all
-    close all
-    fclose('all');
+    %clear all % Not when inside a function with parameters crazy!!
+    %close all
+    %fclose('all');
     delete(instrfindall) % For open serial ports
 
     % Output file
@@ -30,7 +30,7 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
     sensorPositions = zeros(2, NUM_RECEIVERS);
 
     % Plot or no plot?
-    PLOT = plot;
+    PLOT = makePlot;
     myPlot = [];
 
     % Live or simulated?
@@ -70,7 +70,7 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
 
 
         % Create model (includes particle filter, mapping RSSI-m, etc...
-        model = Model(sensorPositions, np, psf, sem, rsm, gsd);
+        model = Model(sensorPositions, gsd, np, psf, rsm);
 
         % Create plot class
         if (PLOT)
