@@ -29,7 +29,9 @@ classdef Parameters
         % File handles
         %   One master where information across all runs is aggregated
         %       Avgs, stddevs, etc
-        %
+           
+        % Aggregate file - holds important measures for each run
+        aggFid 
         
         
         
@@ -39,8 +41,23 @@ classdef Parameters
         
         function obj = Parameters()
             
+            timeNow = datestr(now,'mm-dd-yyyy_HH-MM-SS');
+        
+            newFolder = sprintf('processed_data/sweep_%s', timeNow);
+            mkdir newFolder
+
+            aggFid = sprintf('processed_data/sweep_%s_agg.csv', timeNow);
+            
+            obj.aggFid = 'sweep
             
         end
+        
+        function beginSweep(gsdR, wbdR, psfR)
+            
+            
+            
+        end
+        
         
     end
     

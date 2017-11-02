@@ -31,8 +31,7 @@ classdef Parameters
         %       Avgs, stddevs, etc
            
         % Aggregate file - holds important measures for each run
-        aggFid
-        
+        aggFname
         
         
         
@@ -42,12 +41,35 @@ classdef Parameters
         
         function obj = Parameters()
             
+            timeNow = datestr(now,'mm-dd-yyyy_HH-MM-SS');
+        
+            newFolder = sprintf('processed_data/sweep_%s', timeNow);
+            mkdir newFolder
+
+            obj.aggFname = sprintf('processed_data/sweep_%s_agg.csv', timeNow);
+            
+            %obj.aggFid = fopen(aggFname, 'a+');
+            
             
         end
         
         function beginSweep(gsdR, wbdR, psfR)
             
+            tic
             
+            for i = 1:numel(gsdR)
+                gsd = gsdR[i];
+                
+                for j = 1:numel(wbdR)
+                    wbd = gsdR[j];
+                    
+                    for k = 1:numel(psfR)
+                        psf = gsdR[k];
+                        
+                        
+                    end
+                end
+            end
             
         end
         
