@@ -75,37 +75,41 @@ classdef Parameters
             for i = 1:numel(gsdR)
                 gsd = gsdR(i);
                 
-                disp('gsd: ');
-                disp(gsd);
+%                 disp('gsd: ');
+%                 disp(gsd);
                 
                 for j = 1:numel(wbdR)
                     wbd = wbdR(j);
                     
-                    disp('wbd: ');
-                    disp(wbd);
+%                     disp('wbd: ');
+%                     disp(wbd);
                     
                     for k = 1:numel(psfR)
                         psf = psfR(k);
                         
-                        disp('psf: ');
-                        disp(psf);
+%                         disp('psf: ');
+%                         disp(psf);
                         
                         for l = 1:numel(npR)
                             np = npR(l);
                             
-                            disp('np: ');
-                            disp(np);
+%                             disp('np: ');
+%                             disp(np);
                             
                             for m = 1:numel(rsmR)
                                 rsm = rsmR(m);
                             
-                                disp('rsm: ');
-                                disp(rsm);
+%                                 disp(rsmR);
+%                                 disp('rsm: ');
+%                                 disp(rsm);
                                 
                                 thisFilename = sprintf('%s/gsd%d_wbd%d_psf%d_npR%d_rsm%s.csv', ...
                                     obj.directory, makeInt(gsd), makeInt(wbd), makeInt(psf), makeInt(np), rsm);
+                                
+                                disp(thisFilename);
+                                
                                 tfid = fopen(thisFilename, 'w');
-
+                                
                                 % D is big data matrix
                                 [avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(obj.simFile, true, gsd, wbd, psf, np, rsm);
 
@@ -116,7 +120,7 @@ classdef Parameters
                                     avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax);
                                 fprintf(afid, '\n');
                             
-                                disp(thisFilename);
+                                fclose(thisFilename);
                             
                             end
                         end

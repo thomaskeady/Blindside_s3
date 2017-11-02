@@ -72,6 +72,8 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
         D = zeros(length(data), 8);
         %disp(size(D));
         %disp(size(D(1, :)));
+        stateCorrected(1), stateCorrected(2), covCorrected(1,1), covCorrected(1,2), covCorrected(2,1), covCorrected(2,2), model.pf.Particles(idx,1), model.pf.Particles(idx,2)];
+        D(1,:) = ["x_mean", "y_mean", "cov11", "cov12", "cov21", "cov22", "x_max", "y_max"];
         
         % Loop over data
         for s=3:length(data)
