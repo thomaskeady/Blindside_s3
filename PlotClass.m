@@ -26,7 +26,7 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
         % For circles when simulating
         CirclePlots
         
-        
+        count = 0;
     end
     
     methods
@@ -90,6 +90,7 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
             
             %disp('updatePLot called');
             
+            obj.count = obj.count + 1;
             particles = particleFilter.Particles;
             obj.Particles.XData = particles(1:end,1);
             obj.Particles.YData = particles(1:end,2);
@@ -116,8 +117,15 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
             title(obj.ax, ['t = ', num2str(t)]);
             
             %disp('end updatePlot');
-            
+            frame = getframe(figure);
+            im = frame2im(frame);
+            [imind,cm] = rgb2ind(im,256);
             pause(0.025);
+            if count == 1 
+                imwrite(imind,cm,'test_gif','gif', 'Loopcount',inf); 
+            else 
+                imwrite(imind,cm,'test_gif','gif','WriteMode','append'); 
+            end 
             
         end
         
