@@ -72,6 +72,9 @@ classdef Parameters
             fprintf(afid, "Gaussian stddev, weight by dist, Particle scatter factor, numParticles, resampling method, avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax");
             fprintf(afid, '\n');
             
+            totalRuns = numel(gsdR) * numel(wbdR) * numel(psfR) * numel(npR) * numel(rsmR);
+            runs = 0;
+            
             tic
             
             for i = 1:numel(gsdR)
@@ -115,9 +118,8 @@ classdef Parameters
                                 % D is big data matrix
                                 [avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(obj.simFile, false, gsd, wbd, psf, np, rsm);
 
-                                %csvwrite(tfid, D);
-                                %csvwrite(thisFilename, D);
-                                xlswrite(thisFilename, D); % shoudl work on Andrew's computer
+                                csvwrite(thisFilename, D);
+                                %xlswrite(thisFilename, D); % shoudl work on Andrew's computer
 
 %                                 fprintf(afid, '%d,%d,%d,%d,%s,%d,%d,%d,%d,%d,%d,%d,%d', gsd, wbd, psf, np, rsm, ...
 %                                     avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax);
@@ -126,7 +128,10 @@ classdef Parameters
                                     fprintf(afid, '\n');
                             
                                 %fclose(tfid);
-                            
+                                
+                                runs = 1 + runs;
+                                disp(sprintf('Did %d of %d', runs, totalRuns));
+                                
                             end
                         end
                     end
