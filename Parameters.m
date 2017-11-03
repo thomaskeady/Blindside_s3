@@ -52,7 +52,7 @@ classdef Parameters
             newFolder = sprintf('processed_data/sweep_%s', timeNow);
             [stat, msg, msgID] = mkdir(newFolder);
 
-            disp(stat);
+            %disp(stat);
             disp(msg);
             disp(msgID);
             
@@ -65,7 +65,7 @@ classdef Parameters
         end
         
         % Each param is an array of values to sweep over
-        function beginSweep(obj, gsdR, wbdR, psfR, npR, rsmR)
+        function beginSweep(obj, doPlot, gsdR, wbdR, psfR, npR, rsmR)
             
             afid = fopen(obj.aggFname, 'a+');
             
@@ -77,11 +77,13 @@ classdef Parameters
             
             tic
             
+            %disp(gsdR);
+            
             for i = 1:numel(gsdR)
                 gsd = gsdR(i);
                 
-%                 disp('gsd: ');
-%                 disp(gsd);
+                 %disp('gsd: ');
+                 %disp(gsd);
                 
                 for j = 1:numel(wbdR)
                     wbd = wbdR(j);
@@ -115,8 +117,10 @@ classdef Parameters
                                 
                                 %tfid = fopen(thisFilename, 'w');
                                 
+                                disp(gsd);
+                                
                                 % D is big data matrix
-                                [avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(obj.simFile, false, gsd, wbd, psf, np, rsm);
+                                [avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(obj.simFile, doPlot, gsd, wbd, psf, np, rsm);
 
                                 csvwrite(thisFilename, D);
                                 %xlswrite(thisFilename, D); % shoudl work on Andrew's computer

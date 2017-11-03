@@ -91,6 +91,8 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
 
             %[stateCorrected, covCorrected] = correct(model.pf, data(s, 3:2+NUM_RECEIVERS), sensorPositions);
             
+            %disp(gsd_);
+            
             % NOTE HOW EMBEDDING GSF AS PART OF READINGS
             [stateCorrected, covCorrected] = correct(model.pf, [gsd_, mapped], sensorPositions);
             %disp('exited correct');
@@ -141,7 +143,7 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
             if (PLOT)
                 %myPlot.updatePlotSim(model.pf, data(s,1), stateCorrected, data(s, 2+NUM_RECEIVERS:3+NUM_RECEIVERS));
                 myPlot.updatePlotSim(model.pf, data(s,1), mapped, sensorPositions, stateCorrected, [x_truth, y_truth]);
-                disp('updated plot');
+                %disp('updated plot');
             end
 
         end
