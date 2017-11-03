@@ -69,7 +69,7 @@ classdef Parameters
             
             afid = fopen(obj.aggFname, 'a+');
             
-            fprintf(afid, "Gaussian stddev, weight by dist, Particle scatter factor, numParticles, resampling method, avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax");
+            fprintf(afid, "Gaussian stddev, weight by dist, Particle scatter factor, numParticles, resampling method, avgDist, stddevDist, avgAng, stddevAng, avgDistMax, stddevDistMax, avgAngMax, stddevAngMax");
             fprintf(afid, '\n');
             
             totalRuns = numel(gsdR) * numel(wbdR) * numel(psfR) * numel(npR) * numel(rsmR);
