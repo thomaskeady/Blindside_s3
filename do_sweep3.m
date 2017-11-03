@@ -1,6 +1,6 @@
 disp('Starting');
 
-f = 'data/data_outside_10-30-2017_13-48-09-side1_forMat.csv';
+f = 'data/data_outside_10-30-2017_14-07-19-front2_forMat.csv';
 
 myParams = Parameters(f);
 
