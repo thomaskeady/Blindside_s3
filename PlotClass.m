@@ -26,6 +26,9 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
         % For circles when simulating
         CirclePlots
         
+        % For covariance matrix
+        Covariance
+        
         count = 0;
     end
     
@@ -67,6 +70,9 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
             
             obj.BestGuess = plot(obj.ax, 0,0,'rs-', 'MarkerSize', 10, 'LineWidth', 1.5); % best guess of pose
             
+            obj.Covariance = error_ellipse([[1,0];[0,1]]);
+            set(obj.Covariance, 'color', 'r');
+            
             %if (isLive) 
             %    obj.ActualPosition = plot(obj.ax, 0,0,'gs-', 'MarkerSize', 10, 'LineWidth', 1.5); % Actual worker location
             %    disp('isLive = true');
@@ -86,7 +92,7 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
         end
         
         
-        function updatePlotSim(obj, particleFilter, t, measurement, sensorPositions, currentBestGuess, actualPosition)
+        function updatePlotSim(obj, particleFilter, t, dist, sensorPositions, currentBestGuess, actualPosition)
             
             %disp('updatePLot called');
             
@@ -103,10 +109,10 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
             
             %BRING THIS BACK BY ADDING MEASUREMENTS TO INPUTS
             theta = linspace(0, 2*pi); 
-            for i = 1:length(measurement)
-                obj.CirclePlots{i}.XData = measurement(1,i)*cos(theta) ...
+            for i = 1:length(dist)
+                obj.CirclePlots{i}.XData = dist(1,i)*cos(theta) ...
                     + sensorPositions(1,i);
-                obj.CirclePlots{i}.YData = measurement(1,i)*sin(theta) ...
+                obj.CirclePlots{i}.YData = dist(1,i)*sin(theta) ...
                     + sensorPositions(2,i);
             end
 
@@ -130,7 +136,7 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
         end
         
         
-        function updatePlotLive(obj, particleFilter, currentBestGuess)
+        function updatePlotLive(obj, particleFilter, t, dist, sensorPositions, currentBestGuess, currentCovar)
             
             particles = particleFilter.Particles;
             obj.Particles.XData = particles(1:end,1);
@@ -139,6 +145,24 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
             obj.BestGuess.XData = currentBestGuess(1);
             obj.BestGuess.YData = currentBestGuess(2);
                         
+            theta = linspace(0, 2*pi); 
+            for i = 1:length(dist)
+                obj.CirclePlots{i}.XData = dist(1,i)*cos(theta) ...
+                    + sensorPositions(1,i);
+                obj.CirclePlots{i}.YData = dist(1,i)*sin(theta) ...
+                    + sensorPositions(2,i);
+            end
+            
+            h = error_ellipse(3*currentCovar);
+            obj.Covariance.XData = h.XData + currentBestGuess(1);
+            obj.Covariance.YData = h.YData + currentBestGuess(2);
+            
+            obj.ax = get(obj.FigureHandle, 'currentaxes');
+            title(obj.ax, ['t = ', num2str(t)]);
+            
+            
+            
+            pause(0.025);
             
         end
         

@@ -34,29 +34,11 @@ classdef Sensors
             %%%%%%%%%%%%%%%%%% INSERT ADDR ORDER HERE %%%%%%%%%%%%%%%%%%
             % Get addr order by running getOrder.m
             
-%             obj.addrs{1} = '/dev/tty.usbserial-DN00D3MA';
-%             obj.addrs{2} = '/dev/tty.usbserial-DN00D2RN';
-%             obj.addrs{3} = '/dev/tty.usbserial-DN00CSPC';
-%             obj.addrs{4} = '/dev/tty.usbserial-DN00B9FJ';
-%             obj.addrs{5} = '/dev/tty.usbserial-DN00D41X';
-%             obj.addrs{6} = '/dev/tty.usbserial-DN00CVZK';
-
-            %obj.addrs{1} = '/dev/tty.usbserial-DN00D3MA'; 
-            %obj.addrs{2} = '/dev/tty.usbserial-DN00CZUI';
-            %obj.addrs{3} = '/dev/tty.usbserial-DN00D2RN';
-            
-%            obj.addrs{1} = '/dev/tty.usbserial-DN00CSPC';
-%            obj.addrs{2} = '/dev/tty.usbserial-DN00D2RN';
-%             obj.addrs{3} = '/dev/tty.usbserial-DN00CVZK';
-%             obj.addrs{4} = '/dev/tty.usbserial-DN00B9FJ';
-%             obj.addrs{5} = '/dev/tty.usbserial-DN00CZUI';
-%             obj.addrs{6} = '/dev/tty.usbserial-DN00D3MA';
-
             obj.addrs{1} = '/dev/tty.usbserial-DN00D2RN';
             obj.addrs{2} = '/dev/tty.usbserial-DN00CVZK';
-            obj.addrs{3} = '/dev/tty.usbserial-DN00B9FJ';
-            obj.addrs{4} = '/dev/tty.usbserial-DN00CZUI';
-            obj.addrs{5} = '/dev/tty.usbserial-DN00D41X';
+            obj.addrs{3} = '/dev/tty.usbserial-DN00CZUI';
+            obj.addrs{4} = '/dev/tty.usbserial-DN00D41X';
+            obj.addrs{5} = '/dev/tty.usbserial-DN00B9FJ';
             obj.addrs{6} = '/dev/tty.usbserial-DN00CSPC';
 
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
