@@ -80,7 +80,7 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
             theta = linspace(0, 2*pi);
 
             for i = 1:NUM_RECEIVERS
-                obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'y');
+                obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'g');
             end
             %disp('exiting begin');
         end
@@ -117,15 +117,15 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
             title(obj.ax, ['t = ', num2str(t)]);
             
             %disp('end updatePlot');
-            frame = getframe(figure);
-            im = frame2im(frame);
-            [imind,cm] = rgb2ind(im,256);
+%             frame = getframe(figure);
+%             im = frame2im(frame);
+%             [imind,cm] = rgb2ind(im,256);
             pause(0.025);
-            if count == 1 
-                imwrite(imind,cm,'test_gif','gif', 'Loopcount',inf); 
-            else 
-                imwrite(imind,cm,'test_gif','gif','WriteMode','append'); 
-            end 
+%             if count == 1 
+%                 imwrite(imind,cm,'test_gif','gif', 'Loopcount',inf); 
+%             else 
+%                 imwrite(imind,cm,'test_gif','gif','WriteMode','append'); 
+%             end 
             
         end
         

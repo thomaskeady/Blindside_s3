@@ -1,19 +1,18 @@
 disp('Starting');
 
-f = 'data/data_outside_10-30-2017_13-57-05-front1_forMat.csv';
+f = 'data/data_outside_10-30-2017_14-07-19-front2_forMat.csv';
 
 myParams = Parameters(f);
 
-gsdR = [0.6];
+gsdR = [0.2];
 
 wbdR = [1]; % Doesnt do anything right now
 
-psfR = [1];
+psfR = [0.1];
 
-npR  = [1000];
+npR  = [250];
 
-rsmR = ["multinomial"]; % , "systematic", "stratified", "residual"
-%rsmR = ["multinomial"];
+rsmR = ["stratified"]; % "multinomial", "systematic", "stratified", "residual"
 
 myParams.beginSweep(gsdR, true, wbdR, psfR, npR, rsmR);
 

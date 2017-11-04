@@ -62,6 +62,8 @@ classdef Parameters
             
             obj.simFile = simFile;
             
+            rng(2); 
+            
         end
         
         % Each param is an array of values to sweep over
