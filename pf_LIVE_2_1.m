@@ -46,25 +46,57 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
         % 2 column offset for sec and minute columns
         fprintf(fid, ',,%f,%f,%f,%f,%f,%f\n', sensorPositions(:, 1)); % print all x vals
         fprintf(fid, ',,%f,%f,%f,%f,%f,%f\n', sensorPositions(:, 2)); % print all y vals 
+        
+        % Create model (includes particle filter, mapping RSSI-m, etc...
+        model = Model(sensorPositions, gsd_, np_, psf_, rsm_);
+        
+        % Create plot class
+        if (PLOT)
+            myPlot = PlotClass();
+            myPlot.begin(max(sensorPositions(1,:)), max(sensorPositions(2,:)), ...
+                sensorPositions, model.bound, ... 
+                LIVE); % Not live if in this branch, leave for ease of reuse
 
+        end
+
+        disp('starting loop');
         tic % Start stopwatch 
         while 1 < 2 
         
-            measurement = mySens.getReading();
+            % Predict
+            [statePred, covPred] = predict(model.pf, model.noise);
             
+            % Take reading
+            measurement = mySens.getReading();
             disp(measurement);
             
+            % Print raw measurements to file
             elapsedTime = toc;
             etimeMins = elapsedTime/60.0;
-            
             fprintf(fid, '%f,%f,%f,%f,%f,%f,%f,%f,', elapsedTime, etimeMins, measurement);
             fprintf(fid, '\n'); % In case above print is not complete, still get newline
+            
+            % Map measurements to distance
+            mapped = model.RSSI_TO_M_COEFF * exp(model.RSSI_TO_M_EXP * measurement);
+            
+            % Update prediction 
+            [stateCorrected, covCorrected] = correct(model.pf, [gsd_, mapped], sensorPositions);
+            
+            
+            
+            
 
 %             if (MODE == 0) % delayTime will be accounted for by plot
 %                 pause;
 %             else
 %                 pause(dt);
 %             end
+            if (PLOT)
+                % Just put truth outside the boundary 
+                myPlot.updatePlotSim(model.pf, elapsedTime, mapped, sensorPositions, stateCorrected, [model.bound+1, model.bound+1]);
+                %disp('updated plot');
+            end
+
 
         end
         
