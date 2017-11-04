@@ -1,7 +1,7 @@
 % D is [secs, mins, raw data... raw data, state est 1... state est n]
 %function [avgDist, avgAng, stddevDist, stddevAng, D] = doPF(dataFile, aggFname, directory, params)
 %function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(simFile, makePlot, gsd_, wbd, psf_, np_, sem, rsm_)
-function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(sensorPositions, makePlot, gsd_, wbd, psf_, np_, rsm_)
+function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(simFile, makePlot, gsd_, wbd, psf_, np_, rsm_)
 
     %clear all 
     %close all
@@ -24,7 +24,7 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
     %notNeeded =  0; %holds val of max particle later
     
     % Live or simulated?
-    LIVE = true;
+    LIVE = false;
 
     if (LIVE)  % Just put this in another file, too complicated (parameter requirements change a lot
         
