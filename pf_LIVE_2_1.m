@@ -43,8 +43,8 @@ function pf_LIVE_2_1(sensorPositions, makePlot, gsd_, wbd, psf_, np_, rsm_)
         cleanupobj = onCleanup(@() cleanmeup(fid));
         
         % 2 column offset for sec and minute columns
-        fprintf(fid, ',,%f,%f,%f,%f,%f,%f\n', sensorPositions(:, 1)); % print all x vals
-        fprintf(fid, ',,%f,%f,%f,%f,%f,%f\n', sensorPositions(:, 2)); % print all y vals 
+        fprintf(fid, ',,%f,%f,%f,%f,%f,%f\n', sensorPositions(1,:)); % print all x vals
+        fprintf(fid, ',,%f,%f,%f,%f,%f,%f\n', sensorPositions(2,:)); % print all y vals 
         
         % Create model (includes particle filter, mapping RSSI-m, etc...
         model = Model(sensorPositions, gsd_, np_, psf_, rsm_);
