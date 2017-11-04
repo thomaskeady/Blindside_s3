@@ -37,15 +37,36 @@ function [avgDistMean, avgAngMean, stddevDistMean, stddevAngMean, avgDistMax, av
         %   They are talking? Good, start up everything else
 
         %   Create file to log to (inside file handling class!! - not using one )
-        timeNow = datestr(now,'mm-dd-yyyy_HH-MM-SS');
-        fname = sprintf('data/live_%s_.csv', timeNow);
+        ftimeNow = datestr(now,'mm-dd-yyyy_HH-MM-SS');
+        fname = sprintf('data/live_%s_.csv', ftimeNow);
         fid = fopen(fname, 'a+');
         
         cleanupobj = onCleanup(@() cleanmeup(fid));
         
-        fprintf(fid, '%f,%f,%f,%f,%f,%f\n', sensorPositions(:, 1)); % print all x vals
-        fprintf(fid, '%f,%f,%f,%f,%f,%f\n', sensorPositions(:, 2)); % print all y vals 
+        % 2 column offset for sec and minute columns
+        fprintf(fid, ',,%f,%f,%f,%f,%f,%f\n', sensorPositions(:, 1)); % print all x vals
+        fprintf(fid, ',,%f,%f,%f,%f,%f,%f\n', sensorPositions(:, 2)); % print all y vals 
 
+        tic % Start stopwatch 
+        while 1 < 2 
+        
+            measurement = mySens.getReading();
+            
+            disp(measurement);
+            
+            elapsedTime = toc;
+            etimeMins = elapsedTime/60.0;
+            
+            fprintf(fid, '%f,%f,%f,%f,%f,%f,%f,%f,', elapsedTime, etimeMins, measurement);
+            fprintf(fid, '\n'); % In case above print is not complete, still get newline
+
+%             if (MODE == 0) % delayTime will be accounted for by plot
+%                 pause;
+%             else
+%                 pause(dt);
+%             end
+
+        end
         
         
     else

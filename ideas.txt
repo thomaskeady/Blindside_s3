@@ -23,3 +23,7 @@ General:
             Also toggle between models by changing filename
 
     Include ground truth, compare accuracy over parameter sweeps, output to files
+
+
+Issues:
+    Assume worker enters field from edge, where least accuracy. How resample/converge best?
