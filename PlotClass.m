@@ -70,8 +70,8 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
             
             obj.BestGuess = plot(obj.ax, 0,0,'rs-', 'MarkerSize', 10, 'LineWidth', 1.5); % best guess of pose
             
-            obj.Covariance = error_ellipse([[1,0];[0,1]]);
-            set(obj.Covariance, 'color', 'r');
+            %obj.Covariance = error_ellipse([[1,0];[0,1]]);
+            %set(obj.Covariance, 'color', 'r');
             
             %if (isLive) 
             %    obj.ActualPosition = plot(obj.ax, 0,0,'gs-', 'MarkerSize', 10, 'LineWidth', 1.5); % Actual worker location
@@ -152,10 +152,13 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
                 obj.CirclePlots{i}.YData = dist(1,i)*sin(theta) ...
                     + sensorPositions(2,i);
             end
+           
+            %h = error_ellipse(3*currentCovar);
             
-            h = error_ellipse(3*currentCovar);
-            obj.Covariance.XData = h.XData + currentBestGuess(1);
-            obj.Covariance.YData = h.YData + currentBestGuess(2);
+            %get(h)
+            
+            %obj.Covariance.XData = h.XData + currentBestGuess(1);
+            %obj.Covariance.YData = h.YData + currentBestGuess(2);
             
             obj.ax = get(obj.FigureHandle, 'currentaxes');
             title(obj.ax, ['t = ', num2str(t)]);
