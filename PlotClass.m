@@ -86,7 +86,20 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
             theta = linspace(0, 2*pi);
 
             for i = 1:NUM_RECEIVERS
-                obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'g');
+                if i == 1
+                    obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'g');
+                elseif i == 2
+                    obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'b');
+                elseif i == 3
+                    obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'y');
+                elseif i == 4
+                    obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'm');
+                elseif i == 5
+                    obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'r');
+                else
+                    obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'k');
+                end
+                    
             end
             %disp('exiting begin');
         end
