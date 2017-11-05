@@ -17,6 +17,18 @@ rsmR = "stratified"; % "multinomial", "systematic", "stratified", "residual"
 
 %%%%%%%%%%%%%%%%%% INSERT sensorPositions HERE %%%%%%%%%%%%%%%%%%
 
+%     3         4
+%       +-----+
+%       |  F  |
+%       |     | 
+%    2  +     +  5
+%       |     | 
+%       |     | 
+%       +-----+
+%     1         6
+%
+
+
 sideDist = 1.52; % m, 2x this distance is length of vehicle
 halfwidth = 1.22; %m, 2x this is width of vehicle
 
