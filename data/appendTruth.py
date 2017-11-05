@@ -6,8 +6,8 @@ TRUTH_FILE = "4m_L_truth.csv";
 OUT_FILE = basename(DATA_FILE) + "_forMat.csv";
 
 numSensors = 6; # Therefore offset for truth rows is this + 2
-x_offset = 0; # Specify widths and offsets here
-y_offset = -12.5; # speficy widths and offsets here
+x_offset = -(1.22 + 2); # Specify widths and offsets here
+y_offset = -3.81; # speficy widths and offsets here
 moving_dir = 'y'; # 'x' or 'y'
 
 with open(DATA_FILE, "U") as datafile:
@@ -25,10 +25,25 @@ with open(DATA_FILE, "U") as datafile:
 
             r = 2; # 3rd row is where data starts
             currSecs = 0;
+            first = True;
             for trow in truthRows:
-                #print (trow[0]);
-                # 0 = dist, 1 = pos, 2 = mins 3 = seconds
-                seconds = trow[2]*60 + trow[3];
+                if first:
+                    first = False;
+                else:
+                    #print (trow[0]);
+                    # 0 = dist, 1 = pos, 2 = mins 3 = seconds
+                    seconds = float(trow[2])*60 + float(trow[3]);
+                    print (seconds)
 
-                while dataRows[r][0] < seconds:
-                    # Start putting truth here
+                    while float(dataRows[r][0]) < seconds:
+                        # Start putting truth here
+                        print(r);
+                        y_pos = float(trow[1]) + y_offset;
+
+                        if moving_dir == 'y':
+                            dataRows[r].append(x_offset);
+                            dataRows[r].append(y_pos);
+
+                        w.writerow(dataRows[r])
+
+                        r += 1;
