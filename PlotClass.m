@@ -97,10 +97,10 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
                     obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'b');
                     obj.Receiver  = rectangle(obj.ax, 'position', [-x_dist, -y_dist/4, x_dist/2, y_dist/2], 'facecolor', 'g');
                 elseif i == 3
-                    obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'c');
+                    obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'm');
                     obj.Receiver  = rectangle(obj.ax, 'position', [-x_dist, y_dist-y_dist/2, x_dist/2, y_dist/2], 'facecolor', 'b');
                 elseif i == 4
-                    obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'm');
+                    obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'c');
                     obj.Receiver  = rectangle(obj.ax, 'position', [x_dist-x_dist/2, -y_dist/4, x_dist/2, y_dist/2], 'facecolor', 'c');
                 elseif i == 5
                     obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'r');
