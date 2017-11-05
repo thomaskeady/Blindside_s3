@@ -122,7 +122,7 @@ classdef Parameters
                                 disp(gsd);
                                 
                                 % D is big data matrix
-                                [avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf2_1(obj.simFile, doPlot, gsd, wbd, psf, np, rsm);
+                                [avgDist, avgAng, stddevDist, stddevAng, avgDistMax, avgAngMax, stddevDistMax, stddevAngMax, D] = pf_SIM_2_1(obj.simFile, doPlot, gsd, wbd, psf, np, rsm);
 
                                 csvwrite(thisFilename, D);
                                 %xlswrite(thisFilename, D); % shoudl work on Andrew's computer
