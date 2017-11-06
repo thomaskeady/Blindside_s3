@@ -1,6 +1,6 @@
 disp('Starting');
 
-f = 'data/data_outside_10-30-2017_14-07-19-front2_forMat.csv';
+f = 'data/live_11-05-2017_13-24-42_3mL_forMat.csv';
 
 myParams = Parameters(f);
 
@@ -12,7 +12,7 @@ psfR = [0.1];
 
 npR  = [250];
 
-rsmR = ["stratified"]; % "multinomial", "systematic", "stratified", "residual"
+rsmR = ["residual"]; % "multinomial", "systematic", "stratified", "residual"
 
 myParams.beginSweep(gsdR, true, wbdR, psfR, npR, rsmR);
 
