@@ -1,10 +1,10 @@
 disp('Starting');
 
-f = 'data/data_outside_10-30-2017_13-57-05-front1_forMat.csv';
+f = 'data/data_outside_10-30-2017_13-48-09-side1_forMat.csv';
 
 myParams = Parameters(f);
 
-gsdR = [0.1, 0.2, 0.3, 0.4, 0.5, 1, 5];
+gsdR = [0.1, 0.2, 0.3, 0.4, 0.5, 1, 5, 10];
 
 wbdR = [1]; % Doesnt do anything right now
 
