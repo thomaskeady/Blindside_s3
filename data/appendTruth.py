@@ -1,9 +1,9 @@
 import csv
-from os.path import basename
+from os.path import splitext
 
 DATA_FILE = "live_11-05-2017_13-36-54_.csv";
 TRUTH_FILE = "4m_L_truth.csv";
-OUT_FILE = basename(DATA_FILE) + "_forMat.csv";
+OUT_FILE = splitext(DATA_FILE)[0] + "_forMat.csv";
 
 numSensors = 6; # Therefore offset for truth rows is this + 2
 x_offset = -(1.22 + 2); # Specify widths and offsets here
@@ -41,8 +41,10 @@ with open(DATA_FILE, "U") as datafile:
                         y_pos = float(trow[1]) + y_offset;
 
                         if moving_dir == 'y':
-                            dataRows[r].append(x_offset);
+                            #dataRows[r].append(x_offset);
+                            dataRows[r][numSensors+2] = x_offset;
                             dataRows[r].append(y_pos);
+                            #dataRows[r][numSensors+3] = y_pos;
 
                         w.writerow(dataRows[r])
 
