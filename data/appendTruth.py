@@ -1,12 +1,12 @@
 import csv
 from os.path import splitext
 
-DATA_FILE = "live_11-05-2017_13-36-54_.csv";
-TRUTH_FILE = "4m_L_truth.csv";
+DATA_FILE = "live_11-05-2017_13-24-42_3mL.csv";
+TRUTH_FILE = "3m_L_truth.csv";
 OUT_FILE = splitext(DATA_FILE)[0] + "_forMat.csv";
 
 numSensors = 6; # Therefore offset for truth rows is this + 2
-x_offset = -(1.22 + 2); # Specify widths and offsets here
+x_offset = -(1.22 + 3); # Specify widths and offsets here
 y_offset = -3.81; # speficy widths and offsets here
 moving_dir = 'y'; # 'x' or 'y'
 
