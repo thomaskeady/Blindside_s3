@@ -8,9 +8,9 @@ gsdR = 0.2;
 
 wbdR = 1; % Doesnt do anything right now
 
-psfR = 0.1;
+psfR = 1;
 
-npR  = 250;
+npR  = 500;
 
 rsmR = "stratified"; % "multinomial", "systematic", "stratified", "residual"
 

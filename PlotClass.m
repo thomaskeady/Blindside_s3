@@ -92,22 +92,22 @@ classdef PlotClass < handle % tbh idk what < handle means but it made a warning 
             for i = 1:NUM_RECEIVERS
                 if i == 1
                     obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'g');
-                    obj.Receiver  = rectangle(obj.ax, 'position', [-x_dist, -y_dist, x_dist/2, y_dist/2], 'facecolor', 'k');
+                    obj.Receiver  = rectangle(obj.ax, 'position', [-x_dist, -y_dist, x_dist/2, y_dist/2], 'facecolor', 'g');
                 elseif i == 2
                     obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'b');
-                    obj.Receiver  = rectangle(obj.ax, 'position', [-x_dist, -y_dist/4, x_dist/2, y_dist/2], 'facecolor', 'g');
+                    obj.Receiver  = rectangle(obj.ax, 'position', [-x_dist, -y_dist/4, x_dist/2, y_dist/2], 'facecolor', 'b');
                 elseif i == 3
                     obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'm');
-                    obj.Receiver  = rectangle(obj.ax, 'position', [-x_dist, y_dist-y_dist/2, x_dist/2, y_dist/2], 'facecolor', 'b');
+                    obj.Receiver  = rectangle(obj.ax, 'position', [-x_dist, y_dist-y_dist/2, x_dist/2, y_dist/2], 'facecolor', 'm');
                 elseif i == 4
                     obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'c');
                     obj.Receiver  = rectangle(obj.ax, 'position', [x_dist-x_dist/2, -y_dist/4, x_dist/2, y_dist/2], 'facecolor', 'c');
                 elseif i == 5
                     obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'r');
-                    obj.Receiver  = rectangle(obj.ax, 'position', [x_dist-x_dist/2, y_dist/2, x_dist/2, y_dist/2], 'facecolor', 'm');
+                    obj.Receiver  = rectangle(obj.ax, 'position', [x_dist-x_dist/2, y_dist/2, x_dist/2, y_dist/2], 'facecolor', 'r');
                 else
                     obj.CirclePlots{i} = plot(obj.ax, 0*cos(theta) + sensorPositions(1, i), 0*sin(theta) + sensorPositions(2, i), 'k');
-                    obj.Receiver  = rectangle(obj.ax, 'position', [x_dist-x_dist/2, -y_dist, x_dist/2, y_dist/2], 'facecolor', 'r');
+                    obj.Receiver  = rectangle(obj.ax, 'position', [x_dist-x_dist/2, -y_dist, x_dist/2, y_dist/2], 'facecolor', 'k');
                 end
                     
             end
