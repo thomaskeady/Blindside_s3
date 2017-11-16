@@ -1,0 +1,10 @@
+-noise: .1:1 //~.3 seems best to me
+-stdev: .6:10, broke at .5 not sure why
+-state estimation: 'mean' or 'maxweight' //mean seems to work better by my eye
+-ResamplingMethod: 'multinomial' or 'systematic'
+-throw out large d //not sure this makes a difference, the particles are never on the large radii anyway
+-weight by distance doesn't seem to work
+-#particles: 500-10000
+
+
+draw circle via stddev or area of particles?

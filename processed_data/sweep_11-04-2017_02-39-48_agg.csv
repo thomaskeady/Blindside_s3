@@ -1,0 +1,2 @@
+Gaussian stddev, weight by dist, Particle scatter factor, numParticles, resampling method, avgDist, stddevDist, avgAng, stddevAng, avgDistMax, stddevDistMax, avgAngMax, stddevAngMax
+1,1,1.000000e-01,250,stratified,5.701581e+00,3.394237e+00,-1.474959e+00,1.389827e-01,5.751372e+00,3.362123e+00,-1.379147e+00,5.725610e-01

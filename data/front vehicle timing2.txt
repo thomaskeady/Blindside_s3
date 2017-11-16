@@ -1,0 +1,25 @@
+went to 2m at 55s
+
+3m at 1:31
+
+4m at 2:30
+
+5m at 3:34
+
+6m at 4:30
+
+back to 5m at 5:30
+
+4m at 6:30
+
+3m at 7:30
+
+2m at 8:30
+
+1m at 9:32
+
+ended at 10:30
+
+Note this should be at 10 readings/sec, did actually achieve?
+
+2RN is back right, went counterclockwise around (from top)

@@ -1,6 +1,7 @@
 %function updatePlot(obj, particleFilter, currentBestGuess, t)
-function updatePlot(particleFilter, currentBestGuess, t, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition, worker)
-    % updatePlot
+%function updatePlot(particleFilter, currentBestGuess, t, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition, worker)
+function updatePlot(particleFilter, currentBestGuess, t, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition, worker, sensorPositions, measurement, circlePlots)
+% updatePlot
 
     %obj.Cnt1 = obj.Cnt1 + 1;           
 
@@ -26,9 +27,6 @@ function updatePlot(particleFilter, currentBestGuess, t, plotHParticles, plotFig
     plotHBestGuesses.XData = currentBestGuess(1);
     plotHBestGuesses.YData = currentBestGuess(2);
 
-    plotActualPosition.XData = worker(1);
-    plotActualPosition.YData = worker(2);
-    
 %     % draw car rear axle center
 %     obj.HCenter.XData = obj.Pose(1);
 %     obj.HCenter.YData = obj.Pose(2);
@@ -39,6 +37,14 @@ function updatePlot(particleFilter, currentBestGuess, t, plotHParticles, plotFig
 % 
 %     % draw car-like robot
 %     obj.drawCarBot();
+
+    theta = linspace(0, 2*pi);
+    for i = 1:length(measurement)
+        circlePlots{i}.XData = measurement(i,1)*cos(theta) ...
+            + sensorPositions(i,1);
+        circlePlots{i}.YData = measurement(i,1)*sin(theta) ...
+            + sensorPositions(i,2);
+    end
 
     ax = get(plotFigureHandle, 'currentaxes');
     title(ax, ['t = ', num2str(t)]);

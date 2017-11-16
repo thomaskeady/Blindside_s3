@@ -1,0 +1,4 @@
+http://jsfiddle.net/Cnj8s/68/
+https://blog.truthlabs.com/beacon-tracking-with-node-js-and-raspberry-pi-794afa880318
+https://stackoverflow.com/questions/36399927/distance-calculation-from-rssi-ble-android
+https://www.google.com/search?q=kalman+filter+bluetooth+distance&oq=kalman+filter+bluetooth+distance&aqs=chrome..69i57.5816j0j7&sourceid=chrome&ie=UTF-8

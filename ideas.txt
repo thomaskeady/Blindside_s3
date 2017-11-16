@@ -3,6 +3,9 @@ Ideas:
 STF:
     Add distribution around previous estimate to encourage more particles to be near there
     Pull particles towards previous estimate? Not sure i like that
+
+    https://www.mathworks.com/help/robotics/ref/robotics.resamplingpolicy-class.html
+    ^^^ WHAT IS THIS THING WHY HAVENT SEEN BEFORE?? investigate!!
     
 MLF:
     
@@ -11,3 +14,16 @@ MLF:
 General:
     Randomly throw down new particles 
     Plot distance circles on the plot to compare to particles
+
+    MAKE THE WHOLE THING CLASSY - do week of 10/24 - 10-29
+        class for plot
+        class for real sensors
+            toggle between real data and sim data - better or worse than using git branches?
+        class for all model params so can modify in an isolated fashion
+            Also toggle between models by changing filename
+
+    Include ground truth, compare accuracy over parameter sweeps, output to files
+
+
+Issues:
+    Assume worker enters field from edge, where least accuracy. How resample/converge best?

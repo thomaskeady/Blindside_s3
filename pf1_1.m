@@ -1,30 +1,128 @@
 clear all
 close all
+fclose('all');
+delete(instrfindall) % For open serial ports
+
 
 % Start with positions of the sensors
 
+% sensorPositions = [
+%      -1, -2;
+%      1, -2;
+%      1, 0;
+%      1, 2;
+%      -1, 2;
+%      -1, 0];
+
+
+sideDist = 1.52; % m, 2x this distance is length of vehicle
+halfwidth = 1.22; %m, 2x this is width of vehicle
+
 sensorPositions = [
-    -1, -2;
-    1, -2;
-    1, 0;
-    1, 2;
-    -1, 2;
-    -1, 0];
+    -halfwidth, -sideDist;
+    -halfwidth, 0;
+    -halfwidth, sideDist;
+    halfwidth, sideDist;
+    halfwidth, 0;
+    halfwidth, -sideDist];
+    
 
 %disp(sensorPositions);
 
+% Should print sensor positions to file too
+
 %plot(sensors(:, 1), sensors(:, 2)); % Plots the rectangle
+
+% Receiver addresses
+NUM_RECEIVERS = 6; % Should be equal to length(sensorPositions)
+START_RECEIVER = 2; % The first one that will get a successful read
+
+disp('Opening receivers')
+
+duinos = cell(NUM_RECEIVERS,1);
+% duinos{4} = '/dev/tty.usbserial-DN00CSPC';%
+% duinos{3} = '/dev/tty.usbserial-DN00CZUI';%
+% duinos{2} = '/dev/tty.usbserial-DN00B9FJ';%%
+% duinos{5} = '/dev/tty.usbserial-DN00D2RN';%
+% duinos{6} = '/dev/tty.usbserial-DN00D3MA';%
+% duinos{1} = '/dev/tty.usbserial-DN00D41X';%
+
+duinos{1} = '/dev/tty.usbserial-DN00D3MA';%
+duinos{2} = '/dev/tty.usbserial-DN00D2RN';%
+duinos{3} = '/dev/tty.usbserial-DN00CSPC';%
+duinos{4} = '/dev/tty.usbserial-DN00B9FJ';%
+duinos{5} = '/dev/tty.usbserial-DN00D41X';%
+duinos{6} = '/dev/tty.usbserial-DN00CVZK';%
+
+ports = cell(NUM_RECEIVERS, 1);
+
+% % Do we still have to do this janky first one outside the loop?
+%l%ports{1} = serial(duinos{1}, 'BaudRate', 115200);
+%l%fopen(ports{1});
+%l%set(ports{1}, 'Timeout', 0.1);
+%l%set(ports{1}, 'Timeout', 2);
+
+for i = START_RECEIVER:NUM_RECEIVERS
+    %disp(duinos{i});
+    %disp('next');
+    %l%ports{i} = serial(duinos{i},'BaudRate',115200);
+    %l%fopen(ports{i});
+    %l%set(ports{i}, 'Timeout', 2);
+    
+end
+
+% 
+%for i = 1:length(duinos)
+% for i = START_RECEIVER:NUM_RECEIVERS+1
+%     %disp(duinos{i});
+%     %disp('next');
+%     ports{i-1} = serial(duinos{i-1},'BaudRate',115200);
+%     fopen(ports{i-1});
+%     set(ports{i-1}, 'Timeout', 2);
+%     
+% end
+
+%disp(ports);
+
+readings = cell(NUM_RECEIVERS, 1);
+
+trash = 0;
+
+for t = 1:5 % Clearing startup glitches
+    for i = 1:NUM_RECEIVERS
+        
+        %l%fwrite(ports{i}, 'A');
+        %trash = fscanf(ports{i}, '%d');
+        %l%readings{i} = fscanf(ports{i}, '%d');
+        
+    end
+end
+
+disp(class(cell2mat(readings)));
+disp(cell2mat(readings));
+
+disp('done with trash')
+
+
+% For data logging
+location = 'H224B';
+fname = sprintf('data/data_outside_%s.csv', datestr(now,'mm-dd-yyyy_HH-MM-SS'));
+fid = fopen(fname, 'a+');
+fprintf(fid, '%f,%f,%f,%f,%f,%f\n', sensorPositions(:, 1)); % print all x vals
+fprintf(fid, '%f,%f,%f,%f,%f,%f\n', sensorPositions(:, 2)); % print all y vals
+%fprintf(fid, '%d,%d,%d,%d,%d,%d\n', sensorPositions(1, 1), sensorPositions(1, 2), sensorPositions(1, 3), sensorPositions(1, 4), sensorPositions(1, 5), sensorPositions(1, 6)); % print all x vals
+%fprintf(fid, '%d,%d,%d,%d,%d,%d\n', sensorPositions(2, 1), sensorPositions(2, 2), sensorPositions(2, 3), sensorPositions(2, 4), sensorPositions(2, 5), sensorPositions(2, 6)); % print all y vals
 
 % Make the pf
 pf = robotics.ParticleFilter;
 
-numParticles = 2000;
+NUM_PARTICLES = 2000;
 
 bound = 8;
 stateBounds = [
     -bound, bound;
     -bound, bound];
-initialize(pf, numParticles, stateBounds);
+initialize(pf, NUM_PARTICLES, stateBounds);
 
 %initialPose = [3.5, 0];
 %initialize(pf, numParticles, initialPose, eye(2));
@@ -39,7 +137,7 @@ pf.StateTransitionFcn = @stf1_1;
 pf.MeasurementLikelihoodFcn = @mlf1_1;
 
 % Time step
-dt = 0.5; % in seconds
+DT = 0.5; % in seconds
 
 %r = robotics.Rate(1/dt);
 %reset(r); % Example says "% Reset the fixed-rate object"
@@ -49,8 +147,15 @@ simulationTime = 0;
 % Plot stuff stolen from ExampleHelperCarBot
 plotFigureHandle = figure('Name', 'Particle Filter');
 % clear the figure
+
+disp('between figure and axes');
+%pause; % Window with no axes (makes sense lol)
+
 ax = axes(plotFigureHandle);
 cla(ax)
+
+disp('between cla and .Position');
+%pause; % Little baby plot with no formatting
 
 % customize the figure
 plotFigureHandle.Position = [100 100 1000 500];
@@ -59,6 +164,9 @@ xlim(ax, [-(bound+1),bound+1]);
 ylim(ax, [-(bound+1),bound+1]);
 grid(ax, 'on');
 box(ax, 'on');         
+
+disp('between box and hold');
+%pause; % plot appears, no box
 
 hold(ax, 'on')
 
@@ -70,50 +178,54 @@ plotHBestGuesses = plot(ax, 0,0,'rs-', 'MarkerSize', 10, 'LineWidth', 1.5); % be
 
 plotActualPosition = plot(ax, 0,0,'gs-', 'MarkerSize', 10, 'LineWidth', 1.5); % Actual worker location
 
-% Everything here is for the circularly moving worker
-radius = 4.5;
-noise = 3; % noise = random gaussian * dist * this
-speed = 0.5;   % Scales how quickly they move
-rng('default'); % for repeatable result
+circlePlots = cell(NUM_RECEIVERS, 1);
 
-while simulationTime < 20 % if time is not up
+theta = linspace(0, 2*pi);
+
+for i = 1:NUM_RECEIVERS
+    circlePlots{i} = plot(ax, 0*cos(theta) + sensorPositions(i, 1), 0*sin(theta) + sensorPositions(i, 2), 'y');
+end
+
+
+RSSI_TO_M_COEFF = 0.00482998;
+RSSI_TO_M_EXP = -0.104954;
+
+% Everything here is for the circularly moving worker
+RADIUS = 4.5;
+NOISE = 3; % noise = random gaussian * dist * this
+SPEED = 0.5;   % Scales how quickly they move
+rng('default'); % for repeatable result
+worker(1) = 0;
+worker(2) = 0;
+
+while simulationTime < 50 % if time is not up
+    
+    disp('==== STARTED NEXT LOOP ====');
     
     % Predict
-    [statePred, covPred] = predict(pf, noise);
+    [statePred, covPred] = predict(pf, NOISE);
     
+    % Real measurements now!
     
-    % Create circular path for worker
-    worker(1) = radius * cos(speed * simulationTime);
-    worker(2) = radius * sin(speed * simulationTime);
+    measurement = zeros(length(sensorPositions), 1);
     
-    measurement(1) = sqrt( ...
-        (sensorPositions(1,1) - worker(1))^2 + ...
-        (sensorPositions(1,2) - worker(2))^2 );
+    for i = 1:NUM_RECEIVERS
+        
+        %l%fwrite(ports{i}, 'A');
+        %l%readings{i} = fscanf(ports{i}, '%d');
+        %l%disp( readings{i});
+        %l%readings{i} = RSSI_TO_M_COEFF * exp(RSSI_TO_M_EXP * readings{i});
+        
+        
+    end    
     
-    measurement(2) = sqrt( ...
-        (sensorPositions(2,1) - worker(1))^2 + ...
-        (sensorPositions(2,2) - worker(2))^2 );
+    %l%measurement = cell2mat(readings);
     
-    measurement(3) = sqrt( ...
-        (sensorPositions(3,1) - worker(1))^2 + ...
-        (sensorPositions(3,2) - worker(2))^2 );
+    fprintf(fid, '%f,%f,%f,%f,%f,%f,', measurement);
+    fprintf(fid, '\n');
     
-    measurement(4) = sqrt( ...
-        (sensorPositions(4,1) - worker(1))^2 + ...
-        (sensorPositions(4,2) - worker(2))^2 );
-    
-    measurement(5) = sqrt( ...
-        (sensorPositions(5,1) - worker(1))^2 + ...
-        (sensorPositions(5,2) - worker(2))^2 );
-    
-    measurement(6) = sqrt( ...
-        (sensorPositions(6,1) - worker(1))^2 + ...
-        (sensorPositions(6,2) - worker(2))^2 );
-    
-    % Add noise
-    measurement + ((randn(1,1) * noise).*measurement);
-    
-    %disp(measurement); % Post noise
+    disp(readings);
+    disp(measurement);
     
     % Correct % originally had a transpose on the measurement?
     [stateCorrected, covCorrected] = correct(pf, measurement, sensorPositions);
@@ -121,7 +233,8 @@ while simulationTime < 20 % if time is not up
     
     % Update plot
     if ~isempty(get(groot,'CurrentFigure')) % if figure is not prematurely killed
-        updatePlot(pf, stateCorrected, simulationTime, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition, worker);
+        %updatePlot(pf, stateCorrected, simulationTime, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition, worker);
+        updatePlot(pf, stateCorrected, simulationTime, plotHParticles, plotFigureHandle, plotHBestGuesses, plotActualPosition, worker, sensorPositions, measurement, circlePlots);
     else
         break
     end
@@ -131,13 +244,16 @@ while simulationTime < 20 % if time is not up
     
     
     % Update simulation time
-    simulationTime = simulationTime + dt;
+    simulationTime = simulationTime + DT;
     
 end
 
 
 
+delete(instrfindall);
+%clear all;
 
+fclose(fid);
 
 disp('Done');
 
