@@ -22,9 +22,14 @@ int led = 3;
 bool led_state = false;
 
 bool serialing = false;
-volatile int grssi = 0;
+volatile int grssi_1 = 0;
+volatile int grssi_2 = 0;
+volatile int grssi_3 = 0;
 int receivedCount = 0;
 //bool gotNew = false;
+
+//found in Simblee literature, could try and see if it helps?
+//SimbleeCOM.mode = LONG_RANGE;
 
 void setup() {
   Serial.begin(9600);
@@ -47,7 +52,8 @@ void loop() {
     //Serial.println(grssi/receivedCount);
     //Serial.println(receivedCount);
     //Serial.println(grssi/queue.count()); // Any reason to clear queue after? for all new data?
-    Serial.println(grssi); // Any reason to clear queue after? for all new data?
+    Serial.printf("1 %d 2 %d 3 %d\n", grssi_1, grssi_2, grssi_3); // Any reason to clear queue after? for all new data?
+    //Serial.printf("1 %d", grssi_1);
     // queue.count() should always = 10 but if interrupt occurs between these two ifs
     // then it would be 11, lets not risk
 
@@ -63,9 +69,23 @@ void loop() {
 
 void SimbleeCOM_onReceive(unsigned int esn, const char *payload, int len, int rssi)
 {
+   //printf("%d\n", esn);
   if (!serialing) {
+    if (esn == -682860272){ //0xc40791c5
+       grssi_1 = rssi;
+      // printf("1 ");
+    }else if (esn == 618982283){ //0xd74c6110
+      grssi_2 = rssi;
+      //printf("2 ");
+    }else if (esn == -1006136891){ //0x24e4eb8b
+      grssi_3 = rssi;
+      //printf("3");
+    }else {
+      rssi = 0;
+      //printf("none");
+    }
     //grssi += rssi;
-    grssi = rssi;
+    //grssi = rssi;
     //receivedCount++;
     //queue.push(rssi);
     //gotNew = true;

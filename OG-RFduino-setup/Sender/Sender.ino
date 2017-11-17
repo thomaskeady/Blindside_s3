@@ -1,3 +1,5 @@
+#include <SimbleeCOM.h>
+
 /*
  * Copyright (c) 2015 RF Digital Corp. All Rights Reserved.
  *
@@ -32,6 +34,7 @@ void loop() {
   SimbleeCOM.send(payload, sizeof(payload));
   digitalWrite(led, state);
   state = !state;
-  delay(5);
+  delay(50);
+  
 }
   

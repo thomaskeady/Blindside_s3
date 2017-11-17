@@ -40,6 +40,9 @@ classdef Sensors
             obj.addrs{4} = '/dev/tty.usbserial-DN00D2RN';
             obj.addrs{5} = '/dev/tty.usbserial-DN00CZUI';
             obj.addrs{6} = '/dev/tty.usbserial-DN00CSPC';
+            obj.addrs{7} = ;
+            obj.addrs{8} = ;
+            
 
 
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
